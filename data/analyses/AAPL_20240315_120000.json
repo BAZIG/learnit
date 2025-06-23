@@ -1,0 +1,29 @@
+{
+  "ticker": "AAPL",
+  "analyst_signals": {
+    "technical_agent": {
+      "AAPL": {
+        "signal": "buy",
+        "confidence": 85.5
+      }
+    },
+    "fundamental_agent": {
+      "AAPL": {
+        "signal": "buy",
+        "confidence": 78.2
+      }
+    },
+    "sentiment_agent": {
+      "AAPL": {
+        "signal": "neutral",
+        "confidence": 65.0
+      }
+    }
+  },
+  "decision": {
+    "action": "buy",
+    "quantity": 100,
+    "confidence": 76.2,
+    "reasoning": "Strong technical and fundamental signals indicate a potential upward trend. Technical analysis shows bullish patterns, while fundamental analysis reveals solid financial metrics. Sentiment is neutral but not concerning. Overall confidence in the buy signal is high."
+  }
+} 

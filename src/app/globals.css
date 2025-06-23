@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --terminal-bg: #000000;
+  --terminal-text: #ffffff;
+  --terminal-border: #333333;
+  --terminal-header: #1a1a1a;
+  --terminal-dim: #cccccc;
+  --terminal-bright: #ffffff;
+}
+
+body {
+  background-color: var(--terminal-bg);
+  color: var(--terminal-text);
+  font-family: 'Consolas', 'Courier New', monospace;
+}
+
+.terminal-window {
+  @apply bg-[var(--terminal-bg)] border border-[var(--terminal-border)] rounded-none shadow-lg;
+}
+
+.terminal-header {
+  @apply bg-[var(--terminal-header)] p-2 border-b border-[var(--terminal-border)] flex items-center;
+}
+
+.terminal-content {
+  @apply p-4 overflow-auto;
+}
+
+.terminal-text {
+  @apply font-mono text-[var(--terminal-text)];
+}
+
+.terminal-input {
+  @apply bg-transparent border-none outline-none text-[var(--terminal-text)] font-mono w-full;
+}
+
+.terminal-prompt {
+  @apply text-[var(--terminal-text)] mr-2;
+}
+
+.terminal-command {
+  @apply text-[var(--terminal-text)] opacity-75;
+}
+
+.terminal-output {
+  @apply text-[var(--terminal-text)] mt-2;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--terminal-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--terminal-border);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}

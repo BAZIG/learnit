@@ -1,0 +1,95 @@
+{
+  "ticker": "AAPL",
+  "timestamp": "2025-06-01T11:17:40.386991",
+  "analyst_signals": {
+    "bill_ackman_agent": {
+      "AAPL": {
+        "signal": "neutral",
+        "confidence": 50.0,
+        "reasoning": "While AAPL has a strong brand and competitive advantage, its high valuation and high debt-to-equity ratio raise concerns. The company's revenue growth is positive but underwhelming, and the margin of safety on intrinsic value suggests a potential buying opportunity. However, without clear signs of activism or significant changes in management, I remain neutral."
+      }
+    },
+    "warren_buffett_agent": {
+      "AAPL": {
+        "signal": "bearish",
+        "confidence": 71.429,
+        "reasoning": "Strong ROE of 151.3% suggests a durable competitive advantage (moat), but high debt to equity ratio of 4.0 and weak liquidity with current ratio of 0.8 raise concerns about the company's ability to invest in its business and manage risk, respectively. While management analysis shows some shareholder-friendly habits, the overall picture is one of risk and potential for overvaluation."
+      }
+    },
+    "aswath_damodaran_agent": {
+      "AAPL": {
+        "signal": "bullish",
+        "confidence": 70.0,
+        "reasoning": "Positive FCFF growth, ROIC 47.7%, and a relatively low price-to-earnings ratio of 33.6; these metrics suggest that AAPL is undervalued at current prices."
+      }
+    },
+    "ben_graham_agent": {
+      "AAPL": {
+        "signal": "neutral",
+        "confidence": 50.0,
+        "reasoning": "The analysis results in a mediocre score overall, with moderate improvements in earnings growth but concerning weaknesses in liquidity and valuation. The relatively low margin of safety indicates that the current price is near its historical value range."
+      }
+    },
+    "charlie_munger_agent": {
+      "AAPL": {
+        "signal": "bullish",
+        "confidence": 85.0,
+        "reasoning": "AAPL's strong moat analysis score of 8.89 and high predictability analysis score of 10 indicate a durable competitive advantage and predictable cash flows. The company's excellent ROIC (>15%), pricing power (avg gross margin 40.7%), low capital requirements, and significant goodwill/intangible assets suggest a substantial brand value or intellectual property. While the valuation analysis is expensive, the growing FCF trend adds to intrinsic value. The management analysis reveals excellent cash conversion and shareholder-friendly practices, further supporting our bullish stance. Overall, we believe AAPL has a strong foundation for long-term growth and are willing to pay a premium for it."
+      }
+    },
+    "cathie_wood_agent": {
+      "AAPL": {
+        "signal": "bullish",
+        "confidence": 85.0,
+        "reasoning": "AAPL's strong and consistent R&D investment growth (+67.3% YoY), increasing innovation funding capacity, and improving operating margin (31.6%) indicate a significant transformation in the company's business model. The expanding gross margins (+8.0%) further supports this notion. Although the valuation calculation reveals a moderate margin of safety, our analysis suggests that AAPL is on the cusp of exponential growth potential, driven by its innovative products and services. We expect the company to continue investing heavily in R&D, driving future growth and solidifying its position as a leader in the tech industry."
+      }
+    },
+    "stanley_druckenmiller_agent": {
+      "AAPL": {
+        "signal": "bearish",
+        "confidence": 80.0,
+        "reasoning": "While AAPL shows strong revenue growth, the recent price momentum is underwhelming due to a lack of data (only 3-months) and the overall risk profile is concerning with high debt-to-equity and low valuation metrics. The almost even split between insider buys and sells also suggests caution. With limited upside potential (10% from current levels), I'm favoring a cautious stance."
+      }
+    },
+    "peter_lynch_agent": {
+      "AAPL": {
+        "signal": "bullish",
+        "confidence": 80.0,
+        "reasoning": "Strong revenue growth (42.4%) and EPS growth (84.6%) suggest a 'ten-bagger' potential, despite a relatively high PEG ratio (0.38). The company's strong operating margin (31.6%) and positive free cash flow ($108.8B) indicate solid fundamentals. Insiders are mostly neutral, but overall, the analysis points to a promising investment opportunity."
+      }
+    },
+    "michael_burry_agent": {
+      "AAPL": {
+        "signal": "bearish",
+        "confidence": 75.0,
+        "reasoning": "Low FCF yield (3.3%), high leverage D/E (3.96), net insider selling, and excessive negative headlines (251) outweigh positive value signals."
+      }
+    },
+    "phil_fisher_agent": {
+      "AAPL": {
+        "signal": "neutral",
+        "confidence": 50.0,
+        "reasoning": "While AAPL has demonstrated strong revenue growth and stable operating margins, concerns about high valuation multiples and a slight skew towards insider selling activity temper the overall confidence in this investment. The significant R&D investments and very strong EPS growth suggest potential for future growth, but these positives are somewhat offset by the high P/E ratio and mixed sentiment analysis."
+      }
+    },
+    "risk_management_agent": {
+      "AAPL": {
+        "remaining_position_limit": 20000.0,
+        "current_price": 200.85,
+        "reasoning": {
+          "portfolio_value": 100000.0,
+          "current_position_value": 0.0,
+          "position_limit": 20000.0,
+          "remaining_limit": 20000.0,
+          "available_cash": 100000.0
+        }
+      }
+    }
+  },
+  "decision": {
+    "action": "buy",
+    "quantity": 30,
+    "confidence": 75.0,
+    "reasoning": "Charlie Munger and Cathie Wood have high confidence in AAPL's bullish signal, while Warren Buffett has a relatively low confidence. Considering the current price of $200.85 and maximum shares allowed, buying 30 shares would put the long position at 72.55 (30/0.40) and keep the overall portfolio risk manageable."
+  }
+}
