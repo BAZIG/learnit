@@ -61,7 +61,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Store token in cookie
       document.cookie = `token=${data.token}; path=/`;
       setUser(data.user);
-      router.push('/');
+
+      // Redirect based on role
+      if (data.user.role === 'visitor') {
+        router.push('/contact');
+      } else {
+        router.push('/');
+      }
     } catch (error) {
       throw error;
     }

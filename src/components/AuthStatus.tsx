@@ -15,7 +15,8 @@ export default function AuthStatus() {
 
   return user ? (
     <span className="text-[var(--terminal-text)]">
-      {user.name} <button onClick={logout} className="underline ml-2">LOGOUT</button>
+      <Link href="/profile" className="hover:opacity-75">{user.name}</Link>
+      <button onClick={logout} className="underline ml-4">LOGOUT</button>
     </span>
   ) : (
     <Link href="/login" className="text-[var(--terminal-text)] underline">LOGIN</Link>
