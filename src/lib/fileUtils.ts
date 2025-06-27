@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { AnalysisData } from './analysis';
+import matter from 'gray-matter';
 
 export interface FileInfo {
   filename: string;
@@ -91,4 +92,64 @@ export async function readAnalysisFile(fileInfo: FileInfo): Promise<AnalysisData
   const filePath = path.join(process.cwd(), 'data', 'analyses', fileInfo.filename);
   const content = await fs.promises.readFile(filePath, 'utf-8');
   return JSON.parse(content);
+}
+
+// --- HUMANS ARTICLES UTILS ---
+
+export interface HumanArticleMeta {
+  slug: string;
+  title: string;
+  date: string;
+  category: string;
+  excerpt: string;
+  author?: string;
+}
+
+export interface HumanArticle extends HumanArticleMeta {
+  content: string;
+}
+
+const humansDir = path.join(process.cwd(), 'src', 'data', 'humans');
+
+export function getHumanArticleSlugs(): string[] {
+  if (!fs.existsSync(humansDir)) return [];
+  return fs.readdirSync(humansDir)
+    .filter(file => file.endsWith('.md'))
+    .map(file => file.replace(/\.md$/, ''));
+}
+
+export function getAllHumanArticles(): HumanArticleMeta[] {
+  return getHumanArticleSlugs().map(slug => {
+    const filePath = path.join(humansDir, slug + '.md');
+    const file = fs.readFileSync(filePath, 'utf-8');
+    const { data, content } = matter(file);
+    return {
+      slug,
+      title: data.title || slug,
+      date: data.date || '',
+      category: data.category || '',
+      excerpt: data.excerpt || content.slice(0, 160),
+      author: data.author || '',
+    };
+  });
+}
+
+export function getHumanArticlesByCategory(category: string): HumanArticleMeta[] {
+  return getAllHumanArticles().filter(article => article.category.toLowerCase() === category.toLowerCase());
+}
+
+export function getHumanArticle(slug: string): HumanArticle | null {
+  const filePath = path.join(humansDir, slug + '.md');
+  if (!fs.existsSync(filePath)) return null;
+  const file = fs.readFileSync(filePath, 'utf-8');
+  const { data, content } = matter(file);
+  return {
+    slug,
+    title: data.title || slug,
+    date: data.date || '',
+    category: data.category || '',
+    excerpt: data.excerpt || content.slice(0, 160),
+    author: data.author || '',
+    content,
+  };
 } 

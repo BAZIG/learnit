@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
+import { getHumanArticle } from '@/lib/fileUtils';
+import { marked } from 'marked';
 
 interface Article {
   title: string;
@@ -57,12 +59,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default function Page({ params }: { params: { slug: string } }) {
-  const article = articles[params.slug];
-
+  const article = getHumanArticle(params.slug);
   if (!article) {
     notFound();
   }
-
   return (
     <div className="space-y-4 p-4">
       <div className="terminal-window">
@@ -90,33 +90,9 @@ export default function Page({ params }: { params: { slug: string } }) {
               </span>
             </div>
           </div>
-
-          <div className="prose prose-invert max-w-none">
-            {article.content.split('\n').map((paragraph, index) => {
-              if (paragraph.startsWith('## ')) {
-                return (
-                  <h2 key={index} className="text-[var(--terminal-bright)] text-xl mt-6 mb-4">
-                    {paragraph.replace('## ', '')}
-                  </h2>
-                );
-              }
-              if (paragraph.startsWith('1. ') || paragraph.startsWith('2. ') || paragraph.startsWith('3. ')) {
-                return (
-                  <li key={index} className="text-[var(--terminal-text)] ml-4">
-                    {paragraph}
-                  </li>
-                );
-              }
-              return (
-                <p key={index} className="text-[var(--terminal-text)] mb-4">
-                  {paragraph}
-                </p>
-              );
-            })}
-          </div>
+          <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: marked(article.content) }} />
         </div>
       </div>
-
       <div className="flex justify-between mt-6">
         <Link 
           href="/humans" 
