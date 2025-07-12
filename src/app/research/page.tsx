@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { getLatestAnalyses, readAnalysisFile } from '@/lib/fileUtils';
+import { getLatestAnalyses, readAnalysisFile, getBacktestFiles, readBacktestFile, BacktestResult } from '@/lib/fileUtils';
 import { AnalysisData } from '@/lib/analysis';
 import Link from 'next/link';
 
@@ -135,9 +135,78 @@ function CompanyCard({ ticker, analyses }: { ticker: string; analyses: AnalysisD
   );
 }
 
+function isValidNumber(val: unknown): val is number {
+  return typeof val === 'number' && isFinite(val);
+}
+
+function BacktestCard({ backtest }: { backtest: BacktestResult }) {
+  const pm = backtest.performance_metrics;
+  return (
+    <div className="terminal-window mb-4">
+      <div className="terminal-header">
+        <span className="text-[var(--terminal-text)]">
+          $ {backtest.tickers?.join(', ')} BACKTEST ({backtest.start_date} → {backtest.end_date})
+        </span>
+      </div>
+      <div className="terminal-content">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            {isValidNumber(backtest.initial_capital) && (
+              <div className="flex items-center justify-between">
+                <span className="text-[var(--terminal-dim)]">Initial Capital:</span>
+                <span className="text-[var(--terminal-bright)]">${backtest.initial_capital.toLocaleString()}</span>
+              </div>
+            )}
+            {isValidNumber(backtest.final_value) && (
+              <div className="flex items-center justify-between">
+                <span className="text-[var(--terminal-dim)]">Final Value:</span>
+                <span className="text-[var(--terminal-bright)]">${backtest.final_value.toLocaleString()}</span>
+              </div>
+            )}
+            {isValidNumber(backtest.total_return_pct) && (
+              <div className="flex items-center justify-between">
+                <span className="text-[var(--terminal-dim)]">Total Return:</span>
+                <span className="text-[var(--terminal-bright)]">{backtest.total_return_pct.toFixed(2)}%</span>
+              </div>
+            )}
+            {isValidNumber(pm?.sharpe_ratio) && (
+              <div className="flex items-center justify-between">
+                <span className="text-[var(--terminal-dim)]">Sharpe Ratio:</span>
+                <span className="text-[var(--terminal-bright)]">{pm.sharpe_ratio.toFixed(2)}</span>
+              </div>
+            )}
+            {isValidNumber(pm?.sortino_ratio) && (
+              <div className="flex items-center justify-between">
+                <span className="text-[var(--terminal-dim)]">Sortino Ratio:</span>
+                <span className="text-[var(--terminal-bright)]">{pm.sortino_ratio.toFixed(2)}</span>
+              </div>
+            )}
+            {isValidNumber(pm?.max_drawdown) && (
+              <div className="flex items-center justify-between">
+                <span className="text-[var(--terminal-dim)]">Max Drawdown:</span>
+                <span className="text-[var(--terminal-bright)]">{pm.max_drawdown.toFixed(2)}%</span>
+              </div>
+            )}
+          </div>
+          <div>
+            <div className="text-[var(--terminal-bright)] text-sm">
+              <b>Model:</b> {backtest.model_name} ({backtest.model_provider})<br />
+              <b>Analysts:</b> {backtest.selected_analysts?.join(', ')}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default async function ResearchPage() {
   const companyAnalyses = await getCompanyAnalyses();
   const companies = Object.keys(companyAnalyses).sort();
+
+  // Load backtest files and their data (limit to 5 most recent)
+  const backtestFiles = getBacktestFiles().slice(0, 5);
+  const backtests: BacktestResult[] = await Promise.all(backtestFiles.map(readBacktestFile));
 
   return (
     <div className="space-y-4 p-4">
@@ -179,6 +248,22 @@ export default async function ResearchPage() {
               </div>
             )}
           </Suspense>
+
+          {/* Backtest Results Section */}
+          <div className="mt-8">
+            <div className="terminal-header">
+              <span className="text-[var(--terminal-text)]">BACKTEST RESULTS</span>
+            </div>
+            <div className="terminal-content">
+              {backtests.length > 0 ? (
+                backtests.map((backtest, idx) => (
+                  <BacktestCard key={idx} backtest={backtest} />
+                ))
+              ) : (
+                <div className="text-[var(--terminal-text)]">No backtest results available.</div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

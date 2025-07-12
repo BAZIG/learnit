@@ -152,4 +152,81 @@ export function getHumanArticle(slug: string): HumanArticle | null {
     author: data.author || '',
     content,
   };
+}
+
+// --- BACKTEST UTILS ---
+
+export interface BacktestFileInfo {
+  filename: string;
+  timestamp: Date;
+}
+
+export function parseBacktestFilename(filename: string): BacktestFileInfo | null {
+  // Expected format: TICKER_YYYYMMDD_HHMMSS_analysis.json
+  const match = filename.match(/^([A-Z]+)_(\d{8})_(\d{6})_analysis\.json$/);
+  if (!match) return null;
+  const [, , date, time] = match;
+  const year = date.substring(0, 4);
+  const month = date.substring(4, 6);
+  const day = date.substring(6, 8);
+  const hour = time.substring(0, 2);
+  const minute = time.substring(2, 4);
+  const second = time.substring(4, 6);
+  const timestamp = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`);
+  return { filename, timestamp };
+}
+
+export function getBacktestFiles(): BacktestFileInfo[] {
+  const backtestDir = path.join(process.cwd(), 'data', 'backtest');
+  if (!fs.existsSync(backtestDir)) return [];
+  return fs.readdirSync(backtestDir)
+    .filter(file => file.endsWith('_analysis.json'))
+    .map(file => parseBacktestFilename(file))
+    .filter((info): info is BacktestFileInfo => info !== null)
+    .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+}
+
+export interface BacktestPerformanceMetrics {
+  sharpe_ratio: number | null;
+  sortino_ratio: number | null;
+  max_drawdown: number | null;
+  long_short_ratio: number | null;
+  gross_exposure: number | null;
+  net_exposure: number | null;
+  max_drawdown_date: string | null;
+}
+
+export interface BacktestPortfolioHistoryEntry {
+  Date: string;
+  "Portfolio Value": number;
+  "Long Exposure"?: number;
+  "Short Exposure"?: number;
+  "Gross Exposure"?: number;
+  "Net Exposure"?: number;
+  "Long/Short Ratio"?: number;
+}
+
+export interface BacktestResult {
+  tickers: string[];
+  timestamp: string;
+  start_date: string;
+  end_date: string;
+  initial_capital: number;
+  final_value: number;
+  total_return_pct: number;
+  model_name: string;
+  model_provider: string;
+  selected_analysts: string[];
+  margin_requirement: number;
+  stop_loss_pct: number;
+  take_profit_pct: number;
+  performance_metrics: BacktestPerformanceMetrics;
+  portfolio_history: BacktestPortfolioHistoryEntry[];
+  [key: string]: unknown; // for any extra fields
+}
+
+export async function readBacktestFile(fileInfo: BacktestFileInfo): Promise<BacktestResult> {
+  const filePath = path.join(process.cwd(), 'data', 'backtest', fileInfo.filename);
+  const content = await fs.promises.readFile(filePath, 'utf-8');
+  return JSON.parse(content) as BacktestResult;
 } 
