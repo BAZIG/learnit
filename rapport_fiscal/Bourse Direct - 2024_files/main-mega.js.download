@@ -1,0 +1,1414 @@
+/*##############################################################################
+
+    JS principal du site syst�matiquement appel� dans toutes les pages.
+    Il contient toutes les fonctions communes aux pages du site.
+
+    /!\ La syntaxe du code JS est bas�e sur le framework jQuery
+
+##############################################################################*/
+// VARIABLES GLOBALES
+var glbTemp = 0;
+var aPosScroll = new Array(); // tableau associatif contenant toutes les positons courantes des scrolls
+var objet;
+var iScrollPosition = 0;
+var cookies = true;
+
+// CONSTANTES
+// ici on devrait utiliser le mot cl� 'const' au lieu de 'var' pour d�clarer des
+// constantes et non des variables globales, mais IE ne reconnait pas ce mot cl�.
+var ICO_ERREUR = 1;
+var ICO_INTERDIT = 2;
+var ICO_QUESTION = 3;
+var ICO_INFO = 4;
+
+
+/**
+ * fonction initiale du site ex�cut� une fois le document totalement charg�.
+ *
+ *  @author: Denis THEVENOT
+ *  @return: VOID
+ */
+$(document).ready(function(){
+    if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)==true){
+        $("#fixBlocHaut").css('position','relative');
+        $("#pub1000x90").css('marginTop','0px');
+    }
+
+/*  GESTION COOKIES INTEGRATION MEGAMENU */
+
+        /*if (lit_cook('megamenu') != 1){
+            $('#myModal').modal()
+        }*/
+
+/* FIN  GESTION COOKIES INTEGRATION MEGAMENU */
+    // MODIF SRA le 07 septembre 2009
+    //if($('#message span').html() != '') { openMessage(); }
+    dejaLuMessage=lit_cook('dejaLuMessage');
+
+    if($('#message span#spanMessage').html() && $('#message #spanMessage').html() != '') { openMessage(); }
+
+    testFormCnx();
+    testFormCnxCFD();
+    testFormCnxAsVie();
+    closeMessage();
+    activeMenu();
+    //scrollCadre();
+    clearInput();
+    //scrollVirtuel();
+    checkFormRech();
+    autoActiveFlash();
+    activeDebug();
+    clicScroll();
+    if($('#login')) { $('#login').focus(); } // focus sur le champ login...
+    addToBookmark();
+    addHomePage();
+    //showDeadLinks();
+
+    if (document.documentMode === 7) {
+            $("#fixBlocHaut").css('position','relative');
+            $("#center").css('marginTop','10px');
+            $("#pub1000x90").css('marginTop','0px');
+            $("#topPub").css('paddingTop','0px');
+            $("#container").css('backgroundPosition','50% 156px');
+    }
+
+    /* ANIMATION POUR MENU BOOTSTRAP */
+    if($.fn.on){
+    $('.dropdown').on('show.bs.dropdown', function(e){
+        $(this).find('.dropdown-menu').first().stop(true, true).slideDown();
+        $(this).find('.triangle-wrapper').css('display','block');
+    });
+
+    $('.dropdown').on('hide.bs.dropdown', function(e){
+        $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
+        $(this).find('.triangle-wrapper').css('display','none');
+    });
+    }
+
+/* ========================================= ANIMATION RETOUR TOP ========================================== */
+
+    $('.glyphicon-circle-arrow-up').click(function(){
+        $('html, body').animate({
+            scrollTop: 0
+        }, 500);
+        return false;
+    });
+
+    /*$('#myCarousel').carousel({
+        interval: false
+    })*/
+});
+
+
+
+/*##############################################################################
+
+                        FONCTIONS DU MENU PRINCIPAL
+
+##############################################################################*/
+var trompeur = false,
+    comptage=0
+    displayObs = false;
+$(window).scroll(function() {
+var hauteurScroll = $(window).scrollTop();
+
+if (document.documentMode === 7) {
+    if(hauteurScroll >= 10){
+        $(".obsContainer").css({height:25});
+        $(".colonne > a, .mess, .logo_warning").hide();
+    } else {
+        $(".obsContainer").css({height:52});
+        $(".colonne > a, .mess, .logo_warning").show();
+    }
+} else {
+    if(($(window).width() > 1000 && $(window).height() > 800)&&(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)==false)) {
+
+    if(hauteurScroll >= 200 && trompeur == false && comptage<2){
+        $(".toTop").fadeIn();
+        $(".header-bloc-condenced").css('top','0px');
+        $('.header-sub-bloc .custom-nav .open').trigger('click');
+        $('.popover').popover('hide');
+        comptage--;
+        trompeur=true;
+    }
+    else if (hauteurScroll < 200 && trompeur == true && comptage<2) {
+        $(".toTop").fadeOut();
+        $(".header-bloc-condenced").css('top','-50px');
+        trompeur=false;
+        comptage++;
+    }
+    } else {
+        $("#fixBlocHaut").css('position','relative');
+        $(".header-top-links").css('display','block');
+        $(".bootstrap .yamm.navbar").css("marginTop","15");
+        $("#pub1000x90").css({'marginTop':'0px','marginBottom':'0px'});
+        $('#topPub').css('paddingTop', '0px');
+        if(typeof presencePub !== 'undefined'  && presencePub == true){
+                $('#topPub').css('paddingTop', '175px');
+        }
+    }
+
+}
+
+});
+
+$(window).scroll(function() {
+    var largeurScroll = $(window).scrollLeft();
+    if(largeurScroll > 1){
+        $("#fixBlocHaut").css('left','-'+largeurScroll+'px');
+
+    } else{
+        $("#fixBlocHaut").css('left','0px');
+    }
+
+});
+
+$(window).resize(function() {
+        if(typeof presencePub !== 'undefined'  && presencePub == true){
+            $('#topPub').css('paddingTop', '175px');
+        }
+});
+
+/**
+ *  Fonction principale du menu appel�e apr�s le chargement de la page
+ *
+ *  @author: Denis THEVENOT
+ *  @return: VOID
+ */
+function activeMenu()
+{
+    $('#blocMenu a').click(function()
+    {
+        if($(this).attr('href') == '#') { return false; }
+    });
+
+/*    jQuery('ul.select:first').superfish({
+        animation:  {height:'show'},
+        speed:      200,
+        autoArrows: false,
+        onHide: function(){
+            $('ul.select:first').show().css('visibility','visible');
+        }
+    });*/
+
+    if(isIE6())
+    {
+        $('#blocMenu').mouseenter(function(){
+            $('select').css('visibility','hidden');
+            $('iframe').css('visibility','hidden');
+        }).mouseleave(function(){
+            $('select').css('visibility','visible');
+            $('iframe').css('visibility','visible');
+        });
+    }
+
+
+}
+
+/**
+ * Retourne le niveau du menu de l'�l�ment sur lequel l'utilisateur a cliqu�.
+ *
+ * @author: Denis THEVENOT
+ * @param: oItem (HTML Object) El�ment HTML cliqu� du menu
+ * @return: (Integer) Entier repr�sentant le niveau du menu
+ */
+function getLevelMenu(oItem)
+{
+    var retour = false;
+    if      (oItem.parentNode.parentNode.id == 'blocMenu')                                                                   { retour = 1; }
+    else if(oItem.parentNode.parentNode.parentNode.parentNode.id == 'blocMenu')                                             { retour = 2; }
+    else if(oItem.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id == 'blocMenu')                       { retour = 3; }
+    else if(oItem.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id == 'blocMenu') { retour = 4; }
+
+    return retour;
+}
+
+
+
+
+
+/*##############################################################################
+
+                        FONCTIONS SCROLLS (NON UTILISEES)
+
+##############################################################################*/
+
+/** FONCTION PLUS UTILISEE POUR LE MOMENT...
+ * Teste le clic sur chacun des boutons UP et DOWN des cadres d�filants
+ *
+ * @author: Denis THEVENOT
+ * @return: VOID
+ */
+function scrollCadre(){
+    // si aucun bouton 'btnUp' est pr�sent dans la page on sort de la fonction
+    if((!$('.btnUp:first')) && (!$('.btnRight:first')) ) { return false; }
+
+    $('a.btnUp,a.btnDown,a.btnLeft,a.btnRight').click(function(){
+        if(this.className == 'btnRight') { this.addClass('rightOn'); }
+        scrolling(this); return false;
+    });
+}
+
+
+/** FONCTION PLUS UTILISEE POUR LE MOMENT...
+ *
+ * Fait d�filer le cadre dans le sens correspondant au bouton cliqu�
+ *
+ * @author: Denis THEVENOT
+ * @param: oBtn (HTML Object) correspondant au num�ro du menu 1er niveau
+ * @return: VOID
+ */
+function scrolling(oBtn){
+    oBtn = $(oBtn);
+    var iMsec = 800;
+
+    if(oBtn.parent('DIV'))
+    {
+        var oCadre = oBtn.parent();
+    }
+    else
+    {
+        var oCadre = oBtn.parent().parent();
+    }
+
+    var oEnglobe = $(oCadre).children('.englobe:first');
+    var iLarg = oEnglobe.offsetWidth;
+    var iHaut = oEnglobe.offsetHeight;
+    var oDefile = $(oCadre).children('.defile:first');
+
+    if(!aPosScroll[oCadre.id]) { aPosScroll[oCadre.id] = 0; }
+
+    if(oBtn.hasClass('btnDown')) {
+        aPosScroll[oCadre.id]+= iHaut-15;
+        if(aPosScroll[oCadre.id] >= oDefile.offsetHeight - iHaut) { aPosScroll[oCadre.id] = oDefile.offsetHeight - iHaut; }
+        new Fx.Scroll(oEnglobe, {duration: iMsec, transition: Fx.Transitions.Quart.easeInOut}).scrollTo(0,aPosScroll[oCadre.id]);
+    }
+    else if(oBtn.hasClass('btnUp')) {
+        aPosScroll[oCadre.id]-= iHaut-15;
+        if(aPosScroll[oCadre.id] <= 0) { aPosScroll[oCadre.id] = 0; }
+        new Fx.Scroll(oEnglobe, {duration: iMsec, transition: Fx.Transitions.Quart.easeInOut}).scrollTo(0,aPosScroll[oCadre.id]);
+    }
+    else if(oBtn.hasClass('btnLeft')) {
+        aPosScroll[oCadre.id]-= iLarg;
+        if(aPosScroll[oCadre.id] <= 0) {
+            aPosScroll[oCadre.id] = 0;
+            oBtn.removeClass('leftOn');
+        } else {
+            oBtn.addClass('leftOn');
+        }
+        oBtn.parentNode.children('.btnRight:first').addClass('rightOn');
+        new Fx.Scroll(oEnglobe, {duration: iMsec, transition: Fx.Transitions.Quart.easeInOut}).scrollTo(aPosScroll[oCadre.id],0);
+    }
+    else if(oBtn.hasClass('btnRight')) {
+        aPosScroll[oCadre.id]+= iLarg;
+        if(aPosScroll[oCadre.id] >= oDefile.offsetWidth - iLarg) {
+            aPosScroll[oCadre.id] = oDefile.offsetWidth - iLarg;
+            oBtn.removeClass('rightOn');
+        } else {
+            oBtn.addClass('rightOn');
+        }
+        oBtn.parentNode.children('.btnLeft:first').addClass('leftOn');
+        new Fx.Scroll(oEnglobe, {duration: iMsec, transition: Fx.Transitions.Quart.easeInOut}).scrollTo(aPosScroll[oCadre.id],0);
+    }
+}
+
+
+
+
+/*##############################################################################
+
+                        FONCTIONS GENERALES
+
+##############################################################################*/
+
+/**
+ * Envoie dans le block 'debug' le contenu de la chaine pass�e en param�tre
+ *
+ * @param : 'sChaine' Chaine de caract�re � afficher dans le bloc de d�buggage
+ * @param : 'reset' (Boolean) Si TRUE alors on efface syst�matiquement le contenu debug avant (facultatif, defaut = FALSE)
+ * @return: VOID
+ */
+function debug(sChaine, reset)
+{
+    $('#debug').css('display', 'block');
+
+    var sTexte = $('#debug .corps:first').html();
+
+    if((sTexte != '') && (!reset))
+    {
+        $('#debug .corps:first').html(sTexte + '<hr />' + sChaine);
+    }
+    else
+    {
+        $('#debug .corps:first').html(sChaine+'');
+    }
+}
+
+
+/**
+ * Si le debug contient qqchose on l'affiche et on le rend 'draggable' et 'fermable'.
+ *
+ * @return: VOID
+ */
+function activeDebug() {
+    // on affiche si il est rempli...
+    if( $('#debug .corps:first').html() != '' ) { $('#debug').css('display', 'block'); }
+
+    // on le rend 'draggable'...
+    var oHandle = $('#debug h6:first');
+    //new Drag.Base('debug', {handle: oHandle});
+    //$('#debug').draggable({handle: oHandle});
+
+    // pour fermer la fenetre debug...
+    $('#debug h6 b:first').click(function () { $('#debug').css('display', 'none'); });
+
+}
+
+
+
+
+/**
+ * Rafraichit un �l�ment HTML tout les iSec secondes
+ *
+ * @author: Denis THEVENOT
+ * @param: oElement Objet sur lequel le rafraichissement aura lieu
+ * @param: iSec Nombre de secondes d'intervalle entre chaque rafraishissement
+ * @param: sUrlOld chaine contenant l'URL d'origine de l'image (facultatif)
+ * @return: Boolean VRAI si l'objet est un �l�ment HTML de type <IMG>, sinon FAUX
+ */
+function refreshImage(oImg, iSec, sUrlOld){
+    if(oImg.attr('tagName') != 'IMG') { return false; }
+    if(!sUrlOld) { var sUrlOld = oImg.attr("src") }
+    var sUrlNew = '';
+
+    // g�n�re un nombre al�atoire afin de court-circuiter le cache.
+    var sRand = Math.random() + '';
+    sRand = sRand.substring(0,5);
+
+    sUrlNew = sUrlOld + '&' + sRand;
+    oImg.attr("src", sUrlNew);
+//alert(sUrlNew);
+    setTimeout(function() { refreshImage(oImg, iSec, sUrlOld); }, iSec*1000);
+    return true;
+}
+
+
+/**
+ * Lance les diff�rentes fonctions de test pour le formulaire de connexion
+ *
+ * @author: Denis THEVENOT
+ * @return: VOID
+ */
+function testFormCnx()
+{
+    var oForm = $('#frmLogon');
+
+    $('#frmLogon #passwordLogon').keypress(function(e)
+    {
+        if(e.which == 13) {
+            checkFormCnx(oForm);
+        }
+    });
+
+    /*if($('#logon'))
+    {*/
+        $('#frmLogon #logon').click(function() {
+            checkFormCnx(oForm);
+        });
+    //}
+}
+
+/**
+ * Lance les diff�rentes fonctions de test pour le formulaire de connexion DE LA MERDE EN BARRE
+ *
+ * @author: ...
+ * @return: VOID
+ */
+function testFormCnxCFD()
+{
+    var oForm = $('#clientCFD');
+
+    $('#clientCFD #password').keypress(function(e)
+    {
+        if(e.which == 13) {
+            checkFormCnxCFD(oForm);
+        }
+    });
+
+   /* if($('#next'))
+    {*/
+
+        $('#clientCFD #next').click(function() {
+            checkFormCnxCFD(oForm);
+        });
+    //}
+}
+
+function testFormCnxAsVie()
+{
+    var oForm = $('#frmClient');
+
+    $('#frmClient #password').keypress(function(e)
+    {
+        if(e.which == 13) {
+            checkFormCnxAsVieAdhesion(oForm);
+        }
+    });
+
+//    if($('#btnValider'))
+  //  {
+        $('#btnValider').click(function() {
+            checkFormCnxAsVieAdhesion(oForm);
+        });
+    //}
+}
+/**
+ * V�rifie la validit� des champs du formulaire de connexion lorsque l'on clique
+ * sur le bouton OK.
+ *
+ * @author: Denis THEVENOT
+ * @param: oForm (DOM Object) Le formulaire
+ * @return: VRAI si le formulaire est ok, sinon FAUX.
+ */
+function checkFormCnx(oForm)
+{
+    if(!testCookies())
+    {
+        openMessage('Vous devez activer les cookies dans les options de votre navigateur pour vous connecter.', 1);
+        return false;
+    }
+
+    var laDate = new Date();
+    var heure = Math.round(laDate.getTime() / 1000);
+    oForm[0].heureClient.value= heure;
+    //$('#frmLogon #heureClient').val(heure);
+//alert(document.forms.frmLogon.heureClient.value);
+    if(!oForm[0].login.value)
+    {
+        openMessage('Votre identifiant est requis pour entrer dans l\'espace client', 1);
+        oForm[0].login.focus();
+        return false;
+    }
+
+    if(!oForm[0].passwordLogon.value)
+    {
+        openMessage('Votre mot de passe est requis pour entrer dans l\'espace client', 2);
+        oForm[0].password.focus();
+        return false;
+    }
+    window.status = '';
+    oForm[0].submit();
+    return true;
+}
+
+/**
+ * V�rifie la validit� des champs du formulaire de connexion lorsque l'on clique
+ * sur le bouton OK.
+ *
+ * @author: ...
+ * @param: oForm (DOM Object) Le formulaire
+ * @return: VRAI si le formulaire est ok, sinon FAUX.
+ */
+function checkFormCnxCFD(oForm)
+{
+    var laDate = new Date();
+    var heure = Math.round(laDate.getTime() / 1000);
+    //$('#clientCFD #heureClient').val(heure);
+    oForm[0].heureClient.value= heure;
+
+    if(!oForm[0].login.value)
+    {
+        openMessage('Votre identifiant est requis pour entrer dans l\'espace client', 1);
+        oForm[0].login.focus();
+        return false;
+    }
+
+    if(!oForm[0].password.value)
+    {
+        openMessage('Votre mot de passe est requis pour entrer dans l\'espace client', 2);
+        oForm[0].password.focus();
+        return false;
+    }
+    window.status = '';
+    oForm[0].submit();
+    return true;
+}
+
+function checkFormCnxAsVieAdhesion(oForm)
+{
+    var laDate = new Date();
+    var heure = Math.round(laDate.getTime() / 1000);
+    //$('#frmClient #heureClient').val(heure);
+    oForm[0].heureClient.value= heure;
+
+    if(!oForm[0].login.value)
+    {
+        openMessage('Votre identifiant est requis pour entrer dans l\'espace client', 1);
+        oForm[0].login.focus();
+        return false;
+    }
+
+    if(!oForm[0].password.value)
+    {
+        openMessage('Votre mot de passe est requis pour entrer dans l\'espace client', 2);
+        oForm[0].password.focus();
+        return false;
+    }
+    window.status = '';
+    oForm[0].submit();
+    return true;
+}
+
+/**
+ * V�rification du formulaire de connexion des outils virtuels
+ *
+ * @author : Denis THEVENOT
+ * @return: VOID
+ */
+function checkFormOutVirt()
+{
+    if($('#outVirtLogin').val() == '' )
+    {
+        openMessage('Vous devez entrer un login valide.', 1);
+    }
+    else if($('#outVirtPass').val() == '' )
+    {
+        openMessage('Vous devez entrer un mot de passe valide.', 1);
+    }
+    else if($('#outVirtPortFict').attr('checked') == false && $('#outVirtListePerso').attr('checked') == false)
+    {
+        openMessage('Vous devez cocher soit <u>portefeuille fictif</u> soit <u>liste personnelles</u>', 1);
+    }
+    else
+    {
+        $('#frmListPort').submit();
+    }
+}
+
+
+
+
+/**
+ * Fonction reprenant la celle du m�me nom en PHP : s�pare une chaine en plusieurs
+ * sous-chaines via un caract�re entr� en param�tre et retourne les �l�ments dans
+ * un tableau.
+ *
+ * @author: Denis THEVENOT
+ * @param: sCar (String) Caract�re s�parateur
+ * @param: sChaine (String) Chaine � diviser
+ * @return: (Array) Tableau contenant les sous-chaines s�par�es
+ */
+function explode(sCar, sChaine) {
+    reg = new RegExp('['+sCar+']+', 'g');
+    var aSsChaines = sChaine.split(reg);
+    return aSsChaines;
+}
+
+
+
+
+/**
+ * Ouvre la boite de message central du site avec effets
+ *
+ * @author: Denis THEVENOT
+ * @param: sTexte (String) Chaine du message ou Url de la page � charger dans le popup
+ * @param: iType (Integer) Index du type de message
+ * @param: iLarg2 (Integer) Largeur du popup dans le cas d'une ouverture d'URL (facultatif)
+ * @param: iHaut2 (Integer) Hauteur du popup dans le cas d'une ouverture d'URL (facultatif)
+ * @param: sTexteBtn (String) Texte du boouton suppl�mentaire dans le cas d'une ouverture d'URL (facultatif)
+ * @param: sTexteTitre (String) Texte de la barre de titre dans le cas d'une ouverture d'URL (facultatif)
+ * @return: VOID
+ */
+function openMessage(sTexte, iType, iLarg2, iHaut2, sTexteBtn, sTexteTitre)
+{
+    iScrollPosition = document.getElementsByTagName('html')[0].scrollTop; // on r�cup�re la position du scrolling courant de la page
+
+    $('html,body').animate({scrollTop: 0}, 1, 'swing'); // on remonte le scrolling tout en haut (0)
+
+    $('#message #cadreMsg').draggable({handle: $('#message #cadreMsg h6:first')}); // rend 'draggable' le cadre de message
+
+    if((iLarg2) && (iHaut2)) { var sUrl = sTexte; }
+
+    var iLarg = 400;
+    var iHaut = 200;
+    var iSpeed = 500; // vitesse de l'effet global en ms
+
+    if(!iType) { var iType = 0; }
+    if(sTexteBtn) { $('#message a.close').text(sTexteBtn); }
+    if(sTexteTitre) { $('#message h6 big').text(sTexteTitre); }
+
+    oBloc =  $('#message');
+    oCache = $('#cache');
+    oCadre = $('#cadreMsg');
+    oTexte = $('span#spanMessage', oCadre);
+    oTitre = $('span#titreMessage', oCadre);
+    oClose = $('a.close:first');
+
+    if(isIE6()) { $('select').css('visibility', 'hidden'); }
+
+    if(sUrl)
+    {
+        loadAjax(sUrl, oTexte);
+    }
+    else
+    {
+        if(oTexte.html() == '') { oTexte.html(sTexte); }
+    }
+
+
+    if(oBloc.attr('class') == '')
+    {
+        switch (iType)
+        {
+            case ICO_ERREUR   : oBloc.addClass('msgErreur');   break;
+            case ICO_INTERDIT : oBloc.addClass('msgInterdit'); break;
+            case ICO_QUESTION : oBloc.addClass('msgQuestion'); break;
+            case ICO_INFO     : oBloc.addClass('msgInfo');     break;
+            default           : oBloc.addClass('');            break;
+        }
+    }
+
+    if(($('#msgLarg').val() != '') && ($('#msgHaut').val() != ''))
+    {
+        sUrl = true;
+        iLarg2 = $('#msgLarg').val();
+        iHaut2 = $('#msgHaut').val();
+    }
+
+    oBloc.css('display', 'block');
+    oCache.css('display', 'block');
+    oTexte.css('display', 'none');
+
+    if(sUrl)
+    {
+        oTexte.css('height', iHaut2 - 70);
+        iLarg = iLarg2;
+        iHaut = iHaut2;
+    }
+    else
+    {
+        oTexte.css('height', iHaut - 70);
+    }
+
+    oClose.css('display', 'none');
+
+    oCache.animate({'opacity': 0.5}, iSpeed);
+
+    oCadre.animate({'width': iLarg, 'height': iHaut, 'opacity': 1}, iSpeed, 'linear',
+        function()
+        {
+            oTexte.css('display', 'block');
+            oTitre.css('display', 'block');
+            oClose.css('display', 'inline');
+        }
+    );
+}
+
+
+/**
+ * Ferme la boite de message central du site avec effets lorsque l'on clic sur
+ * le bouton 'fermer' du cadre.
+ *
+ * @author: Denis THEVENOT
+ * @return: VOID
+ */
+function closeMessage()
+{
+    var iSpeed = 500;
+
+    $('#message H6 B:first').click(function ()
+    {
+        $('#message #cadreMsg span').css('display', 'none');
+        $('#message a.close').css('display', 'none');
+
+        $('#message #cadreMsg').animate({'width': '150px', 'height': '100px', 'opacity': 0}, iSpeed, 'linear');
+
+        $('#message #cache').animate({'opacity': 0}, iSpeed, 'linear',
+            function(){
+                $('#message').css('display', 'none');
+                if(isIE6()) { $('select').css('visibility', 'visible'); }
+            }
+        );
+
+        $('html,body').animate({scrollTop: iScrollPosition}, 1, 'swing'); // remise en position du scrolling de d�part...
+
+        return false;
+    });
+
+    $('#message a.close').click(function ()
+    {
+        $('#message #cadreMsg span').css('display', 'none');
+        $('#message a.close').css('display', 'none');
+
+        $('#message #cadreMsg').animate({'width': '150px', 'height': '100px', 'opacity': 0}, iSpeed, 'linear');
+
+        $('#message #cache').animate({'opacity': 0}, iSpeed, 'linear',
+            function(){
+                $('#message').css('display', 'none');
+                if(isIE6()) { $('select').css('visibility', 'visible'); }
+            }
+        );
+
+        $('html,body').animate({scrollTop: iScrollPosition}, 1, 'swing'); // remise en position du scrolling de d�part...
+
+        return false;
+    });
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Encode les caract�res HTML d'une chaine.
+ *
+ *  @author: Denis THEVENOT
+ *  @param: sChaine (String) Chaine en entr�e non cod�e
+ *  @return: (String) Chaine en sortie cod�e
+ */
+function encodeHTML(sChaine){
+    sChaine = sChaine.replace(/(<)+/g, '&lt;');
+    sChaine = sChaine.replace(/(>)+/g, '&gt;');
+    sChaine = sChaine.replace(/(\n)+/g, '<br>');
+    return sChaine;
+}
+
+
+/**
+ * Affiche la date et l'heure
+ *
+ *  @param: aucun
+ *  @return: VOID
+ */
+function dateTime(){
+    d = new Date();
+    document.write(d.toLocaleDateString()+' <br /> Paris : '+d.toLocaleTimeString()+'');
+}
+
+
+/**
+ *  Vide le champs des Inputs lorsque l'on clic dedans.
+ *
+ * @author: Denis THEVENOT
+ * @return: VOID
+ */
+function clearInput(){
+    $('input').focus(function()
+    {
+        if(($(this).val() == 'Identifiant') ||
+            ($(this).val() == 'password') ||
+            ($(this).val() == 'Code, Nom ou Mot') ||
+            ($(this).val() == 'Nom ou Mot') ||
+            ($(this).val() == 'Code ou nom de la valeur...')
+        )
+        {
+            $(this).val('');
+        }
+    });
+}
+
+
+/* fonction de test temporaire... */
+function test() {
+    openMessage('Ceci est un texte d\'essai.<br /><br />Merci.', 2);
+}
+
+
+/**
+ *  Fait apparaitre/disparaitre par gliss� le formulaire de connexion des outils virtuels.
+ *
+ * @author: Denis THEVENOT
+ * @return: VOID
+ */
+function scrollVirtuel(){
+    var iMsec = 800;
+/*
+ * D�sactiv� pour question de s�curit� car formulaire pas en https
+ *
+
+    $('#accesVir').click(function()
+    {
+        iTarget = $('#outilsPersoHide').offset().left;
+        $('#outilsPersoScroll').animate({scrollLeft: iTarget}, iMsec, 'swing'); // on lance l'animation
+        return false;
+    });
+
+    $('#backVir').click(function()
+    {
+        $('#outilsPersoScroll').animate({scrollLeft: 0}, iMsec, 'swing'); // on lance l'animation
+        return false;
+    });*/
+}
+
+
+
+/**
+ * Active automatiquement les Objet Flash sous IE
+ *
+ * @author: Denis THEVENOT
+ * @return: VOID
+ */
+function autoActiveFlash(){
+    /*
+    var aObjects = $('object');
+    for (var i = 0; i < aObjects.length; i++) {
+        aObjects[i].outerHTML = aObjects[i].outerHTML;
+    }
+    */
+}
+
+
+/**
+ * Montre par uns style visuel particulier les liens qui ne pointent vers aucune page (href='#')
+ *
+ * @author: Denis THEVENOT
+ * @return: VOID
+ */
+function showDeadLinks(){
+    var aLinks = $('a');
+
+    for (var i = 0; i < aLinks.length; i++) {
+        if(aLinks[i].href.charAt(aLinks[i].href.length-1) == '#') {
+            aLinks[i].css('background-color', 'red');
+            aLinks[i].css('color', 'white');
+            aLinks[i].css('text-decoration', 'line-through');
+        }
+    }
+}
+
+
+
+
+
+/**
+ * V�rifie le champ du formualire de recherche de valeur lorsque l'on clic sur
+ * le bouton 'Rechercher'.
+ *
+ * @author: Denis THEVENOT
+ * @param:
+ * @return: VOID
+ */
+function checkFormRech()
+{
+    $('#frmRech .btn:first').click(function () {
+        if(document.forms.frmRech.val.value == '') {
+            openMessage('Vous devez saisir une valeur dans le champ de recherche...', ICO_ERREUR);
+            document.forms.frmRech.val.focus();
+            return (false);
+        }
+        document.forms.frmRech.submit();
+    });
+
+    $('#passOrdre .btn:first').click(function () {
+        if(document.forms.passOrdre.val.value == '') {
+            openMessage('Vous devez saisir une valeur...', ICO_ERREUR);
+            document.forms.passOrdre.val.focus();
+            return (false);
+        }
+        document.forms.passOrdre.submit();
+    });
+
+    $('#frmRechRight .btn:first').click(function () {
+        if(document.forms.frmRechRight.val.value == '') {
+            openMessage('Vous devez saisir une valeur...', ICO_ERREUR);
+            document.forms.frmRechRight.val.focus();
+            return (false);
+        }
+        document.forms.frmRechRight.submit();
+    });
+
+    $('#rightNewsRech .btn:first').click(function () {
+        if(document.forms.rightNewsRech.mots.value == '') {
+            openMessage('Vous devez saisir un mot...', ICO_ERREUR);
+            document.forms.rightNewsRech.mots.focus();
+            return (false);
+        }
+        document.forms.rightNewsRech.submit();
+    });
+
+    $('#rightSicavRech .btn:first').click(function () {
+        if(document.forms.rightSicavRech.val.value == '') {
+            openMessage('Vous devez saisir une valeur...', ICO_ERREUR);
+            document.forms.rightSicavRech.val.focus();
+            return (false);
+        }
+        document.forms.rightSicavRech.submit();
+    });
+
+    $('#frmRechSicav .btn:first').click(function () {
+        if(document.forms.frmRechSicav.val.value == '') {
+            openMessage('Vous devez saisir une valeur dans le champ de recherche...', ICO_ERREUR);
+            document.forms.frmRechSicav.val.focus();
+            return (false);
+        }
+        document.forms.frmRechSicav.submit();
+    });
+}
+
+
+/**
+ * Gestion du SELECT pour la boite de recherche VALEUR ou NEWS
+ *
+ * @author: Denis THEVENOT & Sylvain Rossy
+ * @param:
+ * @return: VOID
+*/
+function setAction(){
+    if($('#choixRech').val() == 'valeur'){
+        document.forms.frmRechRight.action = 'recherche-valeur.php';
+    } else {
+        document.forms.frmRechRight.mots.value = document.forms.frmRechRight.val.value;
+        document.forms.frmRechRight.method = 'post';
+        document.forms.frmRechRight.action = 'news-recherche.php';
+    }
+    document.forms.frmRechRight.submit();
+    return false;
+}
+
+function setActionTop(){
+		document.forms.frmRechTop.mots.value = document.forms.frmRechTop.val.value;
+    document.forms.frmRechTop.action = 'recherche-valeur.php';
+    document.forms.frmRechTop.submit();
+    return false;
+}
+
+/**
+ * Recharge le contenu d'un bloc en AJAX depuis une URL donn�e
+ *
+ * @author: Denis THEVENOT
+ * @param: sUrl (String) URL appel�e pour recharger le bloc
+ * @param: oBloc (HTML Object) Bloc devant �tre recharg�
+ * @param: iSec (Integer) Delay de rafraichissment en secondes (facultatif)
+ * @param; refresh (bool) parametre permettant de determiner si on rafraichit
+ *       le bloc la premiere fois lorsque l'on met en plac un delay iSec (facultatif)
+ * @return: VOID
+ */
+function loadAjax(sUrl, oBloc, iSec, refresh)
+{
+    if(!iSec || refresh)
+    {
+        if(typeof(oBloc) == 'string') { oBloc = $('#'+oBloc); }
+
+        $(oBloc).load(sUrl);
+    }
+
+    if(iSec)
+    {
+        setTimeout(function() { loadAjax(sUrl, oBloc, iSec, true); }, iSec*1000);
+    }
+}
+
+/**
+ * Recharge le contenu d'un bloc en AJAX depuis une URL donn�e
+ * Sauf qu'en plus on passe des param�tres de formulaire
+ *
+ * @author: Sylvain RAUCY d'apr�s la fonction de Denis THEVENOT
+ * @param: sUrl (String) URL appel�e pour recharger le bloc
+ * @param: sParams (String) param�tres � passer comme formulaire � l'URL
+ * @param: oBloc (HTML Object) Bloc devant �tre recharg�
+ * @param: iSec (Integer) Delay de rafraichissment en secondes (facultatif)
+ * @return: VOID
+ */
+function loadAjaxWithParams(sUrl, sParams, oBloc, iSec)
+{
+    if(typeof(oBloc) == 'string') { oBloc = $('#'+oBloc); }
+
+    $(oBloc).load(sUrl, sParams);
+
+    if(iSec)
+    {
+        setTimeout(function() { loadAjax(sUrl, sParams, oBloc, iSec); }, iSec*1000);
+    }
+}
+
+
+
+
+
+/**
+ * Rend 'draggable' ou 'non-draggable' le block 'oDiv'
+ *
+ * @author: Denis THEVENOT
+ * @param: oDiv (HTML Object) Block � rendre 'draggable'
+ * @param: bDrag (Boolean) True = draggable, False = non-draggable (d�faut=false)
+ * @return: VOID
+ */
+function draggable(oDiv, bDrag){
+    if(bDrag) {
+        var oFx = new Drag.Base(oDiv);
+    } else {
+        if(oFx) { oFx.stop(); }
+    }
+}
+
+/**
+ * Mettre en page d'accueil le site
+ *
+ * @author: Olivier CHAPELLE
+ * @return: VOID
+ */
+function bookmarksite(title, url)
+{
+    if(document.all)
+    {
+        window.external.AddFavorite(url, title);
+    }
+    else if(window.sidebar)
+    {
+        window.sidebar.addPanel(title, url, '')
+    }
+}
+
+
+
+/**
+ * Impl�mentation de la fonction appel�e par les objets Flash POURRIE A CHIER
+ *
+ * @author: Denis THEVENOT
+ * @return: VOID
+ */
+function popup(url,nom,w,h,x,y,resize,scroll){
+    if(url.indexOf('cotationValeurFuture') != -1){
+        if(url.indexOf('?') != -1)
+            url = url+'&future=1&mois=1';
+        else
+            url = url+'?future=1&mois=1';
+    }
+
+    url = url.replace(/(cotationValeurFuture)+/g, 'fiche-valeur');
+    url = url.replace(/(cotationValeur)+/g, 'fiche-valeur');
+
+    if(url.indexOf('fiche-valeur') != -1){
+        var scroll = 'yes';
+    }
+
+    //document.location.href = url;
+
+    url = url+'&popup=1';
+    settings = 'height='+h+',width='+w+',left='+x+',top='+y+',scrollbars='+scroll+',resizable='+resize+'';
+	window.open(url,nom,settings);
+
+}
+
+
+
+/**
+ *  Fonction qui retourne un tableau associatif avec toutes les variables.
+ *  Utilis�e par getUrl()
+ */
+function getURLvar() {
+    var url = location.href; // donn�es de la barre d'adresse
+    var urlVars = url.split('?'); // tableau contenant d'un cot� l'url proprement dite, de l'autre les variables, s'il yen a (auquel cas, urlVars.length>0 : voir plus bas)
+    var v = new Array(); //
+    v ['name'] = new Array();
+    v ['val'] = new Array();
+
+    if(urlVars.length > 1) {
+        var vars = urlVars[1].split("&"); // s�paration de toutes les variables
+
+        for (var i=0; i<vars.length; i++) {
+            v['name'][i] = vars[i].split('=')[0];
+            v['val'][i]  = vars[i].split('=')[1];
+        }
+    }
+    return(v);
+}
+
+function getUrl(alpha) {
+    var v = getURLvar();
+    var cRet;
+    for (var i=0; i<v['name'].length; i++) {
+        if(v['name'][i] == alpha) {
+            cRet = v['val'][i];
+        }
+    }
+    return cRet;
+}
+
+
+
+/**
+ * Ajoute un effet de scrolling "souple" aux liens locaux
+ *
+ * @author: Denis THEVENOT
+ * @return: VOID
+ */
+function clicScroll()
+{
+    var aLinks = $('a[href^=#][href!=#]');    // tableau contenant tous les liens locaux � la page
+
+    aLinks.click(function()
+    {
+        oTarget = getLinkByName(this.hash.slice(1));                // on r�cup�re son lien ancre correspondant
+        iTarget = oTarget.offset().top;                             // on r�cup�re la position dans la page de ce lien
+        $('html,body').animate({scrollTop: iTarget}, 500, 'swing'); // on lance l'animation
+        return false;                                               // on annule le comportement par d�faut du lien
+    });
+}
+
+
+/**
+ *  Retourne l'objet HTML/lien portant le nom 'name'
+ *
+ *  @author: Denis THEVENOT
+ *  @param: name (String) Nom du lien
+ *  @return: (Object/HTML) Objet lien (a)
+ */
+function getLinkByName(name)
+{
+    var aLinks = $('a[name]');
+
+    for (var i=0; i<aLinks.length; i++)
+    {
+        if(aLinks[i].name == name)
+        {
+            return $(aLinks[i]);
+        }
+    }
+}
+
+
+/**
+ *  D�termine si le navigateur est IE6
+ *
+ *  @author: Denis THEVENOT
+ *  @return: (Boolean) TRUE si IE6, FALSE sinon...
+ */
+function isIE6()
+{
+    if($.browser.msie && $.browser.version == '6.0')
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+
+/**
+ *  D�termine si le navigateur est IE7
+ *
+ *  @author: Denis THEVENOT
+ *  @return: (Boolean) TRUE si IE7, FALSE sinon...
+ */
+function isIE7()
+{
+    if($.browser.msie && $.browser.version == '7.0')
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+
+/**
+ *  D�termine si le navigateur est Firefox
+ *
+ *  @author: Denis THEVENOT
+ *  @return: (Boolean) TRUE si IE6, FALSE sinon...
+ */
+function isFirefox()
+{
+    return $.browser.mozilla;
+}
+
+
+/**
+ *  Affiche un �l�ment HTML
+ *
+ *  @author: Denis THEVENOT
+ *  @param: id (String) ID de l'�l�ment HTML
+ *  @return: VOID
+ */
+function show(id)
+{
+    $('#'+id).css('visibility','visible');
+    $('#'+id).slideDown();
+}
+
+
+/**
+ *  Cache un �l�ment HTML
+ *
+ *  @author: Denis THEVENOT
+ *  @param: id (String) ID de l'�l�ment HTML
+ *  @return: VOID
+ */
+function hide(id)
+{
+    $('#'+id).slideUp();
+}
+
+
+/**
+ *  Affiche ou cache un bloc
+ *
+ *  @author: Denis THEVENOT
+ *  @param: sId (String) ID de l'�l�ment HTML
+ *  @param: iHeight (String) Hauteur souhait� (inutilis� ici)
+ *  @param: bNoEffect (Boolean) Avec ou sans effet (inutilis� ici)
+ *  @return: VOID
+ */
+function toggleBloc(sId, iHeight, bNoEffect)
+{
+    if(iHeight > 0)
+    {
+        $('#'+sId).slideDown();
+    }
+    else
+    {
+        $('#'+sId).slideUp();
+    }
+
+}
+
+
+
+/**
+ *  Ajoute automatiquement la page en favoris
+ *
+ *  @author: Denis THEVENOT
+ *  @return: VOID
+ */
+function addToBookmark()
+{
+    // add a "rel" attrib if Opera 7+
+    if(window.opera)
+    {
+        if($("a.jqbookmark").attr("rel") != "")
+        { // don't overwrite the rel attrib if already set
+            $("a.jqbookmark").attr("rel","sidebar");
+        }
+    }
+
+    $("a.jqbookmark").click(function(event)
+    {
+        event.preventDefault(); // prevent the anchor tag from sending the user off to the link
+        var url = this.href;
+        var title = this.title;
+
+        if(window.sidebar)
+        { // Mozilla Firefox Bookmark
+            window.sidebar.addPanel(title, url, "");
+        }
+        else if( window.external )
+        { // IE Favorite
+            window.external.AddFavorite( url, title);
+        }
+        else if(window.opera)
+        { // Opera 7+
+            return false; // do nothing - the rel="sidebar" should do the trick
+        }
+        else
+        { // for Safari, Konq etc - browsers who do not support bookmarking scripts (that i could find anyway)
+            openMessage('Malheureusement, votre navigateur ne supporte pas l\'ajout automatique en favoris, merci d\'ajouter manuellement cette page dans vos favoris.');
+        }
+    });
+}
+
+
+/**
+ *  Ajoute automatiquement le sie en page d'accueil
+ *
+ *  @author: Denis THEVENOT
+ *  @return: VOID
+ */
+function addHomePage()
+{
+    $('#lien_home_page').click(function()
+    {
+        if(isIE6())
+        {
+            openMessage('Internet Explorer 6.x ne supporte pas cette fonctionnalit�. Merci de mettre � jour votre navigateur.');
+        }
+        else if(isIE7())
+        {
+            this.style.behavior='url(#default#homepage)';this.setHomePage('http://www.boursedirect.fr');
+        }
+        else
+        {
+            openMessage('Votre navigateur ne permet pas cette op�ration. Merci de le faire manuellement.');
+        }
+
+        return false;
+    });
+}
+
+
+/**
+ *  R�cup�re l'URL de la page courante avec chemin complet ou uniquement la page
+ *  et ses �ventuels param�tres.
+ *
+ *  @author: Denis THEVENOT
+ *  @param: complete (Boolean) TRUE pour l'url complete ou FALSE pour le nom de la page (defau: false)
+ *  @return: (String) URL courante
+ */
+function getPage(complete)
+{
+    var chaine = document.location.href;
+
+    if(complete == true)
+    {
+        return chaine;
+    }
+    else
+    {
+        var blocs = chaine.split("/");
+        return blocs[blocs.length-1];
+    }
+}
+
+
+/**
+ *  Teste si les cookies sont activ�s ou pas sur le poste de l'utilisateur
+ *
+ *  @author: Denis THEVENOT
+ *  @return: (Boolean) True si cookies activ�s, False sinon
+ */
+function testCookies()
+{
+    document.cookie = "CookieTest=Enabled";
+
+    var allcookies = document.cookie;
+    var pos = allcookies.indexOf("CookieTest=");
+
+    if(pos != -1)
+    {
+        var start = pos + 11;
+        var end   = allcookies.indexOf(";", start);
+
+        if(end == -1) { end = allcookies.length; }
+
+        var value = allcookies.substring(start, end);
+        value = unescape(value);
+
+        if(value == "Enabled") { return true; } else { return false; }
+    }
+}
+
+function lit_cook(nom) {
+      var deb,fin
+      deb = document.cookie.indexOf(nom + "=")
+      if (deb >= 0) {
+         deb += nom.length + 1
+         fin = document.cookie.indexOf(";",deb)
+         if (fin < 0) fin = document.cookie.length
+         return unescape(document.cookie.substring(deb,fin))
+         }
+      return ""
+}
+/*   GESTION COOKIES INTEGRATION MEGAMENU */
+
+function ecrit_cook_megamenu()
+{
+    $.cookie('megamenu', 1, { expires: 365 });
+}

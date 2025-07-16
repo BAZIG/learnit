@@ -1,0 +1,724 @@
+{
+  "decisions": {
+    "TSLA": {
+      "action": "short",
+      "quantity": 64,
+      "confidence": 76.33,
+      "reasoning": "Multiple bearish signals from respected agents, including Monte Carlo GMB, Valuation Analyst, Sentiment Agent, and Warren Buffett, which suggests a high probability of TSLA price decline. Current cash is sufficient to cover short margin requirements."
+    }
+  },
+  "analyst_signals": {
+    "monte_carlo_gbm_agent": {
+      "TSLA": {
+        "signal": "bearish",
+        "confidence": 70,
+        "reasoning": "Low expected return: -10.3% | High probability of loss: 69.3% | High probability of significant losses: 57.0% | Large expected losses: -25.7% | Analysis based on 0.2-year simulation",
+        "simulation_metrics": {
+          "current_price": 309.63,
+          "expected_return": -10.287060608991037,
+          "volatility": 63.42661062214403,
+          "probability_of_loss": 69.305,
+          "var_5_percent": -48.96341593092101,
+          "var_1_percent": -58.83405747807109,
+          "probability_significant_gain": 14.365,
+          "probability_significant_loss": 56.985,
+          "expected_shortfall": -25.670678920674806,
+          "gbm_drift": -44.22149491847881,
+          "gbm_volatility": 63.42661062214403,
+          "time_horizon_years": 0.24914442162902123,
+          "time_horizon_days": 62.0,
+          "analysis_type": "backtest",
+          "horizon_description": "91 days (0.2 years)"
+        }
+      }
+    },
+    "technical_analyst_agent": {
+      "TSLA": {
+        "signal": "neutral",
+        "confidence": 0,
+        "strategy_signals": {
+          "trend_following": {
+            "signal": "neutral",
+            "confidence": 50,
+            "metrics": {
+              "adx": 20.43849442245798,
+              "trend_strength": 0.20438494422457978
+            }
+          },
+          "mean_reversion": {
+            "signal": "neutral",
+            "confidence": 50,
+            "metrics": {
+              "z_score": -0.4669036261595828,
+              "price_vs_bb": 0.38517164673548804,
+              "rsi_14": 36.42432556012801,
+              "rsi_28": 44.047492090576235
+            }
+          },
+          "momentum": {
+            "signal": "neutral",
+            "confidence": 50,
+            "metrics": {
+              "momentum_1m": -0.014226751455842956,
+              "momentum_3m": 0.0,
+              "momentum_6m": 0.0,
+              "volume_momentum": 0.7581182521638762
+            }
+          },
+          "volatility": {
+            "signal": "neutral",
+            "confidence": 50,
+            "metrics": {
+              "historical_volatility": 0.5559128369869122,
+              "volatility_regime": 1.0,
+              "volatility_z_score": 0.0,
+              "atr_ratio": 0.042308293418403475
+            }
+          },
+          "statistical_arbitrage": {
+            "signal": "neutral",
+            "confidence": 50,
+            "metrics": {
+              "hurst_exponent": 4.686994974318529e-16,
+              "skewness": 0.0,
+              "kurtosis": 0.0
+            }
+          }
+        }
+      }
+    },
+    "fundamentals_analyst_agent": {
+      "TSLA": {
+        "signal": "bearish",
+        "confidence": 50.0,
+        "reasoning": {
+          "profitability_signal": {
+            "signal": "bearish",
+            "details": "ROE: 10.40%, Net Margin: 7.30%, Op Margin: 9.50%"
+          },
+          "growth_signal": {
+            "signal": "neutral",
+            "details": "Revenue Growth: 0.95%, Earnings Growth: -52.72%"
+          },
+          "financial_health_signal": {
+            "signal": "neutral",
+            "details": "Current Ratio: 2.02, D/E: 0.66"
+          },
+          "price_ratios_signal": {
+            "signal": "bearish",
+            "details": "P/E: 182.82, P/B: 17.78, P/S: 13.27"
+          }
+        }
+      }
+    },
+    "sentiment_agent": {
+      "TSLA": {
+        "signal": "bearish",
+        "confidence": 74.14,
+        "reasoning": "Weighted Bullish signals: 69.8, Weighted Bearish signals: 274.3"
+      }
+    },
+    "valuation_analyst_agent": {
+      "TSLA": {
+        "signal": "bearish",
+        "confidence": 100,
+        "reasoning": {
+          "dcf_analysis": {
+            "signal": "bearish",
+            "details": "Value: $6,500,398,529.77, Market Cap: $959,232,969,197.91, Gap: -99.3%, Weight: 35%"
+          },
+          "owner_earnings_analysis": {
+            "signal": "bearish",
+            "details": "Value: $11,468,573,834.01, Market Cap: $959,232,969,197.91, Gap: -98.8%, Weight: 35%"
+          },
+          "ev_ebitda_analysis": {
+            "signal": "neutral",
+            "details": "Value: $859,576,785,523.30, Market Cap: $959,232,969,197.91, Gap: -10.4%, Weight: 20%"
+          }
+        }
+      }
+    },
+    "aswath_damodaran_agent": {
+      "TSLA": {
+        "signal": "neutral",
+        "confidence": 33.333,
+        "reasoning": "Revenue data incomplete; Flat or declining FCFF; ROIC 10.2% (\u202f10\u202f%); P/E 130.8 vs. median 64.5 (expensive)"
+      }
+    },
+    "warren_buffett_agent": {
+      "TSLA": {
+        "signal": "bearish",
+        "confidence": 70.8,
+        "reasoning": "While Tesla's strong brand recognition and innovative products are a significant strength, the company's weak ROE of 9.0% and high debt to equity ratio of 0.7 cast a doubt on its long-term financial health. Additionally, the inconsistent earnings growth pattern and low operating margin of 8.7% raise concerns about the company's ability to sustain profitability. Furthermore, recent common stock issuance may lead to potential dilution of ownership. However, my investment experience has shown that companies with strong competitive advantages can recover from setbacks. Therefore, I believe Tesla still has a chance to demonstrate its long-term resilience and justify an initial investment."
+      }
+    },
+    "bill_ackman_agent": {
+      "TSLA": {
+        "signal": "neutral",
+        "confidence": 55.0,
+        "reasoning": "TSLA's revenue growth is strong, but operating margins are inconsistent and free cash flow generation is not consistently high. The company has reasonable leverage and dividend payments, but the intrinsic value calculation indicates a margin of safety. There is no clear sign of activism opportunity, suggesting potential for value creation. Overall, the analysis suggests a balanced view with some positive and negative signals, warranting neutral confidence."
+      }
+    },
+    "ben_graham_agent": {
+      "TSLA": {
+        "signal": "neutral",
+        "confidence": 50.0,
+        "reasoning": "Earnings analysis is weak, with a negative EPS in multiple periods and inconsistent growth, yet financial strength indicators are relatively solid (Current ratio > 2.0) and valuation metrics show no significant margin of safety below Graham Number."
+      }
+    },
+    "cathie_wood_agent": {
+      "TSLA": {
+        "signal": "neutral",
+        "confidence": 60.0,
+        "reasoning": "TSLA's strong R&D investment growth (9/15) is offset by a lack of innovation-driven disruption (8/12), with valuation analysis indicating a significant margin of safety (-86.33%). The company's revenue growth remains impressive (+22% YoY), but the overall signal leans towards neutral due to concerns about scalability and market saturation."
+      }
+    },
+    "peter_lynch_agent": {
+      "TSLA": {
+        "signal": "bullish",
+        "confidence": 90.0,
+        "reasoning": "Strong revenue growth (209.8%) and EPS growth (792.0%) suggest the company can easily score a ten-bagger. Low debt-to-equity (0.11) and positive free cash flow ($3,581,000,000) are encouraging signs of financial health. PEG ratio of 0.17 indicates undervaluation, making this stock an attractive pick for growth at a reasonable price."
+      }
+    },
+    "charlie_munger_agent": {
+      "TSLA": {
+        "signal": "bearish",
+        "confidence": 60.0,
+        "reasoning": "TSLA's mixed ROIC, limited pricing power, and high capital requirements raise concerns about its competitive advantage. The company's cash conversion is excellent, but conservative debt management and significant share dilution are red flags. Additionally, the business appears to be overvalued at current prices, with an expensive FCF yield and premium to reasonable value. Invert: Would we rather own a business with high ROIC and stable, predictable operations? The answer is yes. Avoid: Overpaying for intangible assets and ignoring concerns about share dilution."
+      }
+    },
+    "phil_fisher_agent": {
+      "TSLA": {
+        "signal": "bearish",
+        "confidence": 60.0,
+        "reasoning": "TSLA's high valuation metrics and declining insider activity signals a potential short-term correction. While the company has impressive growth prospects, its high P/E and P/FCF ratios indicate overvaluation concerns. The stable or improving margins and positive FCF periods suggest strong operational efficiency, but these positives are outweighed by the neutral sentiment and low insider buying activity."
+      }
+    },
+    "stanley_druckenmiller_agent": {
+      "TSLA": {
+        "signal": "bullish",
+        "confidence": 72.2,
+        "reasoning": "TSLA shows exceptional growth momentum with revenue accelerating by 209.8% and EPS growing by 792.0%. Strong price momentum is present, driven by a 28.7% stock gain over the past three months. The company's low debt-to-equity ratio of 0.11 provides a solid risk foundation. Although valuation metrics are elevated, the strong growth profile suggests that TSLA can justify higher multiples in the long run. Insider buying activity and mostly positive/neutral headlines further support the bullish thesis, but high volatility is a concern. Overall, the risk-reward proposition is highly asymmetric with 73% upside potential and only 15% downside risk."
+      }
+    },
+    "risk_management_agent": {
+      "TSLA": {
+        "remaining_position_limit": 20000.0,
+        "current_price": 310.78,
+        "reasoning": {
+          "portfolio_value": 100000.0,
+          "current_position_value": 0.0,
+          "position_limit": 20000.0,
+          "remaining_limit": 20000.0,
+          "available_cash": 100000.0
+        }
+      }
+    }
+  },
+  "forced_trades": {},
+  "tickers": [
+    "TSLA"
+  ],
+  "start_date": "2025-04-16",
+  "end_date": "2025-07-16",
+  "model_name": "llama3.2:latest",
+  "model_provider": "Ollama",
+  "selected_analysts": [
+    "aswath_damodaran",
+    "ben_graham",
+    "bill_ackman",
+    "cathie_wood",
+    "charlie_munger",
+    "monte_carlo_gbm",
+    "peter_lynch",
+    "phil_fisher",
+    "stanley_druckenmiller",
+    "warren_buffett",
+    "technical_analyst",
+    "fundamentals_analyst",
+    "sentiment_analyst",
+    "valuation_analyst"
+  ],
+  "portfolio": {
+    "cash": 100000.0,
+    "margin_requirement": 0.5,
+    "margin_used": 0.0,
+    "stop_loss_pct": null,
+    "take_profit_pct": null,
+    "positions": {
+      "TSLA": {
+        "long": 0,
+        "short": 0,
+        "long_cost_basis": 0.0,
+        "short_cost_basis": 0.0,
+        "short_margin_used": 0.0,
+        "long_shares": [],
+        "short_shares": []
+      }
+    },
+    "realized_gains": {
+      "TSLA": {
+        "long": 0.0,
+        "short": 0.0
+      }
+    }
+  },
+  "timestamp": "2025-07-16T10:26:57.339557",
+  "news_data": {
+    "TSLA": {
+      "count": 50,
+      "items": [
+        {
+          "ticker": "TSLA",
+          "title": "Tesla Leaders Take The Exit Lane: Where Have All The Execs Gone?",
+          "author": "Erica Kollmann",
+          "source": "Benzinga",
+          "date": "2025-07-15T22:58:38Z",
+          "url": "https://www.benzinga.com/markets/tech/25/07/46432860/tesla-leaders-take-the-exit-lane-where-have-all-the-execs-gone",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Dow Jones Awaits CPI Signal with Tariff Risk Clouding Fed Path",
+          "author": "Christian Norman",
+          "source": "Investing.com",
+          "date": "2025-07-15T08:12:00Z",
+          "url": "https://www.investing.com/analysis/dow-jones-awaits-cpi-signal-with-tariff-risk-clouding-fed-path-200663686",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "1 Thing That Matters Most for Tesla Stock Investors",
+          "author": "Neil Patel",
+          "source": "The Motley Fool",
+          "date": "2025-07-15T00:14:00Z",
+          "url": "https://www.fool.com/investing/2025/07/14/1-thing-that-matters-most-for-tesla-stock-investor/?source=iedfolrf0000001",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "S&P 500: Key Weekly Levels and Price Targets",
+          "author": "Patrick Munnelly",
+          "source": "Investing.com",
+          "date": "2025-07-14T18:18:00Z",
+          "url": "https://www.investing.com/analysis/sp-500-key-weekly-levels-and-price-targets-200663654",
+          "sentiment": "positive"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Tesla Just Staged An Epic Comeback In This Crucial European Market",
+          "author": "Chris Katje",
+          "source": "Benzinga",
+          "date": "2025-07-14T16:36:46Z",
+          "url": "https://www.benzinga.com/trading-ideas/long-ideas/25/07/46398394/tesla-just-staged-an-epic-comeback-in-this-crucial-european-market",
+          "sentiment": "positive"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Is Uber the Smart Bet on the Autonomous Driving Boom, Not Tesla or Waymo?",
+          "author": "Gabriel Osorio-Mazzilli",
+          "source": "Investing.com",
+          "date": "2025-07-14T16:27:00Z",
+          "url": "https://www.investing.com/analysis/is-uber-the-smart-bet-on-the-autonomous-driving-boom-not-tesla-or-waymo-200663650",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "INVESTOR ALERT: Pomerantz Law Firm Investigates Claims on Behalf of Investors of\u00a0Tesla, Inc.\u00a0- TSLA",
+          "author": "Pomerantz Llp",
+          "source": "GlobeNewswire Inc.",
+          "date": "2025-07-14T14:00:00Z",
+          "url": "https://www.globenewswire.com/news-release/2025/07/14/3114849/1087/en/INVESTOR-ALERT-Pomerantz-Law-Firm-Investigates-Claims-on-Behalf-of-Investors-of-Tesla-Inc-TSLA.html",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Tesla, xAI and SpaceX Merger? Chamath Palihapitiya Floats 'Industrial Logic' For Union Of Elon Musk-led Companies: 'This Would Be Pretty Logical'",
+          "author": "Vishaal Sanjay",
+          "source": "Benzinga",
+          "date": "2025-07-14T05:52:42Z",
+          "url": "https://www.benzinga.com/markets/large-cap/25/07/46385300/tesla-xai-and-spacex-merger-chamath-palihapitiya-floats-industrial-logic-for-union-of-elon-musk",
+          "sentiment": "positive"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Should You Buy Lucid Stock While It's Below $2.50?",
+          "author": "Reuben Gregg Brewer",
+          "source": "The Motley Fool",
+          "date": "2025-07-13T08:30:00Z",
+          "url": "https://www.fool.com/investing/2025/07/13/should-you-buy-lucid-stock-while-its-below-250/?source=iedfolrf0000001",
+          "sentiment": "positive"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "History Says These 3 Stocks Could Be Big Winners in the Second Half",
+          "author": "David Jagielski",
+          "source": "The Motley Fool",
+          "date": "2025-07-12T16:37:00Z",
+          "url": "https://www.fool.com/investing/2025/07/12/history-says-3-stocks-could-be-big-winners-in-2025/?source=iedfolrf0000001",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "3 Top Electric Vehicle (EV) Stocks to Buy in July",
+          "author": "Ryan Vanzo",
+          "source": "The Motley Fool",
+          "date": "2025-07-12T14:05:00Z",
+          "url": "https://www.fool.com/investing/2025/07/12/top-ev-stocks-buy-tsla-rivn-lcid/?source=iedfolrf0000001",
+          "sentiment": "positive"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "The Smartest Vanguard ETF to Buy With $1,000 Right Now",
+          "author": "James Brumley",
+          "source": "The Motley Fool",
+          "date": "2025-07-12T09:04:00Z",
+          "url": "https://www.fool.com/investing/2025/07/12/the-smartest-vanguard-etf-to-buy-with-1000-right-n/?source=iedfolrf0000001",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "1 Super Growth Stock Is Down 90% and Reminds Me of Amazon in 1999",
+          "author": "Ryan Vanzo",
+          "source": "The Motley Fool",
+          "date": "2025-07-12T08:33:00Z",
+          "url": "https://www.fool.com/investing/2025/07/12/1-super-growth-stock-is-down-90-and-reminds-me-of/?source=iedfolrf0000001",
+          "sentiment": "positive"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Forget About Inflation! This Is a Much Bigger Threat to Wall Street.",
+          "author": "Sean Williams",
+          "source": "The Motley Fool",
+          "date": "2025-07-12T07:06:00Z",
+          "url": "https://www.fool.com/investing/2025/07/12/forget-inflation-much-bigger-threat-to-wall-street/?source=iedfolrf0000001",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "S&P 500 Reaches New Record, but Uncertainty Looms",
+          "author": "Paul Rejczak",
+          "source": "Investing.com",
+          "date": "2025-07-11T13:29:00Z",
+          "url": "https://www.investing.com/analysis/sp-500-reaches-new-record-but-uncertainty-looms-200663554",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Tesla: Musk's Political Pivot, Delivery Misses Put Premium Valuation at Risk",
+          "author": "Damian Nowiszewski",
+          "source": "Investing.com",
+          "date": "2025-07-10T15:05:00Z",
+          "url": "https://www.investing.com/analysis/tesla-musks-political-pivot-delivery-misses-put-premium-valuation-at-risk-200663479",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "INVESTOR ALERT: Pomerantz Law Firm Investigates Claims On Behalf of Investors of\u00a0Tesla, Inc.\u00a0- TSLA",
+          "author": "Pomerantz Llp",
+          "source": "GlobeNewswire Inc.",
+          "date": "2025-07-10T13:00:00Z",
+          "url": "https://www.globenewswire.com/news-release/2025/07/10/3113273/1087/en/INVESTOR-ALERT-Pomerantz-Law-Firm-Investigates-Claims-On-Behalf-of-Investors-of-Tesla-Inc-TSLA.html",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Tesla Stock Is Falling, and Uber Stock Is Soaring",
+          "author": "Parkev Tatevosian, Cfa",
+          "source": "The Motley Fool",
+          "date": "2025-07-10T10:32:00Z",
+          "url": "https://www.fool.com/investing/2025/07/10/tesla-stock-is-falling-and-uber-stock-is-soaring/?source=iedfolrf0000001",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Is Tesla Stock a Buy Ahead of Earnings?",
+          "author": "Daniel Sparks",
+          "source": "The Motley Fool",
+          "date": "2025-07-10T10:15:00Z",
+          "url": "https://www.fool.com/investing/2025/07/10/is-tesla-stock-a-buy-ahead-of-earnings/?source=iedfolrf0000001",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Massive News for Tesla Stock, Lucid Stock, and Rivian Stock Investors!",
+          "author": "Parkev Tatevosian, Cfa",
+          "source": "The Motley Fool",
+          "date": "2025-07-10T10:07:00Z",
+          "url": "https://www.fool.com/investing/2025/07/10/massive-news-for-tesla-stock-lucid-stock-and-rivia/?source=iedfolrf0000001",
+          "sentiment": "positive"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "A Good Recovery in Stock Markets After a Small Correction",
+          "author": "Jason Sen",
+          "source": "Investing.com",
+          "date": "2025-07-10T07:22:00Z",
+          "url": "https://www.investing.com/analysis/a-good-recovery-in-stock-markets-after-a-small-correction-200663458",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "This Is the No. 1 Ultra-High-Yield Dividend Stock Held by Retail Investors on Robinhood -- and It's Not Even Close",
+          "author": "Sean Williams",
+          "source": "The Motley Fool",
+          "date": "2025-07-10T07:06:00Z",
+          "url": "https://www.fool.com/investing/2025/07/10/no-1-ultra-high-yield-dividend-stock-on-robinhood/?source=iedfolrf0000001",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Think It's Too Late to Buy Lucid Group? Here's the Biggest Reason Why There's Still Time.",
+          "author": "Ryan Vanzo",
+          "source": "The Motley Fool",
+          "date": "2025-07-09T16:24:34Z",
+          "url": "https://www.fool.com/investing/2025/07/09/lucid-group-stock-buy-ev-tesla-lcid/?source=iedfolrf0000001",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Torque Vectoring Market Outlook 2025-2034 | Cost and Complexity Hinder Torque Vectoring Adoption in Budget Segments",
+          "author": "Researchandmarkets.Com",
+          "source": "GlobeNewswire Inc.",
+          "date": "2025-07-09T14:53:00Z",
+          "url": "https://www.globenewswire.com/news-release/2025/07/09/3112728/28124/en/Torque-Vectoring-Market-Outlook-2025-2034-Cost-and-Complexity-Hinder-Torque-Vectoring-Adoption-in-Budget-Segments.html",
+          "sentiment": "positive"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Stocks Moving Sideways: Consolidation Before the Next Leg Up?",
+          "author": "Paul Rejczak",
+          "source": "Investing.com",
+          "date": "2025-07-09T13:02:00Z",
+          "url": "https://www.investing.com/analysis/stocks-moving-sideways-consolidation-before-the-next-leg-up-200663417",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Dan Ives Says Elon Musk Is Dragging Tesla Down. Is It Time to Sell?",
+          "author": "Patrick Sanders",
+          "source": "The Motley Fool",
+          "date": "2025-07-09T10:05:00Z",
+          "url": "https://www.fool.com/investing/2025/07/09/dan-ives-says-elon-musk-is-dragging-tesla-down-is/?source=iedfolrf0000001",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Virtual Power Plant (VPP) Industry Research Report 2025-2035 | Distributed Energy Resources Proliferation Driving VPP Ecosystem Expansion",
+          "author": "Researchandmarkets.Com",
+          "source": "GlobeNewswire Inc.",
+          "date": "2025-07-09T08:59:00Z",
+          "url": "https://www.globenewswire.com/news-release/2025/07/09/3112363/28124/en/Virtual-Power-Plant-VPP-Industry-Research-Report-2025-2035-Distributed-Energy-Resources-Proliferation-Driving-VPP-Ecosystem-Expansion.html",
+          "sentiment": "positive"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Technology Sector: Looking at the 'Upside Surprise' Factor Over Last 5 Quarters",
+          "author": "Brian Gilmartin",
+          "source": "Investing.com",
+          "date": "2025-07-09T06:55:00Z",
+          "url": "https://www.investing.com/analysis/technology-sector-looking-at-the-upside-surprise-factor-over-last-5-quarters-200663366",
+          "sentiment": "positive"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Elizabeth Warren Says GOP Chose Trump Over American People, Slams 'Big Beautiful Bill' For Potentially Ushering Health Care Cuts, Price Hikes",
+          "author": "Vishaal Sanjay",
+          "source": "Benzinga",
+          "date": "2025-07-09T03:43:25Z",
+          "url": "https://www.benzinga.com/news/politics/25/07/46311721/elizabeth-warren-says-gop-chose-trump-over-american-people-slams-big-beautiful-bill-for-potentially",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Tesla Was Ready For Q2 China Comeback \u2014 But It Didn't Happen",
+          "author": "Chris Katje",
+          "source": "Benzinga",
+          "date": "2025-07-08T22:30:14Z",
+          "url": "https://www.benzinga.com/trading-ideas/short-ideas/25/07/46310093/tesla-was-ready-for-q2-china-comeback-but-it-didnt-happen",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Stock Market Today: Lucid Jumps 9% Higher as EV Sector Regains Momentum",
+          "author": "Jesterai",
+          "source": "The Motley Fool",
+          "date": "2025-07-08T21:19:31Z",
+          "url": "https://www.fool.com/data-news/2025/07/08/stock-market-lucid-9-higher-ev-sector/?source=iedfolrf0000001",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Global Bull Market Holds Strong Despite Tariff Moves On Korea And Japan; Treasury Auction Results May Steer Market Direction",
+          "author": "The Arora Report",
+          "source": "Benzinga",
+          "date": "2025-07-08T15:35:40Z",
+          "url": "https://www.benzinga.com/government/25/07/46300335/global-bull-market-holds-strong-despite-tariff-moves-on-korea-and-japan-treasury-auction-results-may",
+          "sentiment": "positive"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "ADAS Software Market Trend Analysis Report 2025-2034 | EV Integration, Cloud-Native Platforms, OEM-Software Alliances, and AI/ML Adoption Driving Opportunities",
+          "author": "Researchandmarkets.Com",
+          "source": "GlobeNewswire Inc.",
+          "date": "2025-07-08T15:00:00Z",
+          "url": "https://www.globenewswire.com/news-release/2025/07/08/3111983/28124/en/ADAS-Software-Market-Trend-Analysis-Report-2025-2034-EV-Integration-Cloud-Native-Platforms-OEM-Software-Alliances-and-AI-ML-Adoption-Driving-Opportunities.html",
+          "sentiment": "positive"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Tesla Tanks $68 Billion As Elon Musk Unveils 'America Party'\u2014Investors Rattle Over Political Pivot, Trump Backlash Adds Fuel",
+          "author": "Snigdha Gairola",
+          "source": "Benzinga",
+          "date": "2025-07-08T10:31:31Z",
+          "url": "https://www.benzinga.com/markets/tech/25/07/46291445/tesla-tanks-68-billion-as-elon-musk-unveils-america-party-investors-rattle-over-political-pivot-trum",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Stocks Hold Above Key Moving Averages as Trade Risks Cloud Outlook",
+          "author": "Michael Kramer",
+          "source": "Investing.com",
+          "date": "2025-07-08T07:06:00Z",
+          "url": "https://www.investing.com/analysis/stocks-hold-above-key-moving-averages-as-trade-risks-cloud-outlook-200663296",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Cathie Wood's Tesla Bet Pays Off Again. But How Long Can It Last?",
+          "author": "Lawrence Rothman",
+          "source": "The Motley Fool",
+          "date": "2025-07-08T00:05:00Z",
+          "url": "https://www.fool.com/investing/2025/07/07/cathie-woods-tesla-bet-pays-off-again-but-how-long/?source=iedfolrf0000001",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Why Tesla Stock Is Sinking Today",
+          "author": "Keith Noonan",
+          "source": "The Motley Fool",
+          "date": "2025-07-07T16:11:42Z",
+          "url": "https://www.fool.com/investing/2025/07/07/why-tesla-stock-is-sinking-today/?source=iedfolrf0000001",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Musk Chaos Could Oust Tesla From Mag 7, Making Way For Broadcom",
+          "author": "Piero Cingari",
+          "source": "Benzinga",
+          "date": "2025-07-07T14:34:44Z",
+          "url": "https://www.benzinga.com/markets/tech/25/07/46276421/broadcom-tesla-mag-7-switch-musk-trump-feud",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Tesla Shares Are Sliding Premarket and Politics Could Be the Reason",
+          "author": "Timothy Fries",
+          "source": "Investing.com",
+          "date": "2025-07-07T10:41:00Z",
+          "url": "https://www.investing.com/analysis/tesla-shares-are-sliding-premarket-and-politics-could-be-the-reason-200663248",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Prediction: This Company Will Be the Robotics Leader, Not Tesla",
+          "author": "Geoffrey Seiler",
+          "source": "The Motley Fool",
+          "date": "2025-07-07T07:15:00Z",
+          "url": "https://www.fool.com/investing/2025/07/07/prediction-this-company-will-be-the-robotics-leade/?source=iedfolrf0000001",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Elon Musk's America Party Is A Move In The 'Opposite Direction,' Says Dan Ives, Analyst Gary Black Says Difficult To Predict Impact On Tesla Brand Short Term",
+          "author": "Vishaal Sanjay",
+          "source": "Benzinga",
+          "date": "2025-07-07T02:44:31Z",
+          "url": "https://www.benzinga.com/news/politics/25/07/46267326/elon-musks-america-party-is-a-move-in-the-opposite-direction-says-dan-ives-analyst-gary-black-says-",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "1 Stock to Buy, 1 Stock to Sell This Week: Amazon, Tesla",
+          "author": "Jesse Cohen",
+          "source": "Investing.com",
+          "date": "2025-07-06T13:37:00Z",
+          "url": "https://www.investing.com/analysis/1-stock-to-buy-1-stock-to-sell-this-week-amazon-tesla-200663215",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Does 1 Top Analyst Know Something About Palantir That the Rest of Wall Street Doesn't?",
+          "author": "Keith Speights",
+          "source": "The Motley Fool",
+          "date": "2025-07-06T08:14:00Z",
+          "url": "https://www.fool.com/investing/2025/07/06/does-1-top-analyst-know-something-about-palantir-t/?source=iedfolrf0000001",
+          "sentiment": "positive"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Think President Donald Trump's Tariffs Are Wall Street's Biggest Concern? Then You're Completely Overlooking This Colossal Problem.",
+          "author": "Sean Williams",
+          "source": "The Motley Fool",
+          "date": "2025-07-06T07:06:00Z",
+          "url": "https://www.fool.com/investing/2025/07/06/trump-tariffs-wall-street-concern-colossal-problem/?source=iedfolrf0000001",
+          "sentiment": "negative"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "If I Could Buy and Hold Just 1 Stock Forever, This Would Be It",
+          "author": "Patrick Sanders",
+          "source": "The Motley Fool",
+          "date": "2025-07-05T22:15:00Z",
+          "url": "https://www.fool.com/investing/2025/07/05/if-i-could-buy-and-hold-just-1-stock-forever-this/?source=iedfolrf0000001",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "How Regulatory Changes in Europe, APAC Can Influence ESG Investments in the US",
+          "author": "Dr. Raul Villamarin Rodriguez",
+          "source": "Investing.com",
+          "date": "2025-07-05T11:00:00Z",
+          "url": "https://www.investing.com/analysis/how-regulatory-changes-in-europe-apac-can-influence-esg-investments-in-the-us-200663015",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "We Let AI Pick Stocks \u2014 It's Up 111%+ Since: Here's Its Rationale",
+          "author": "Chinmay Pandya",
+          "source": "Investing.com",
+          "date": "2025-07-04T07:30:00Z",
+          "url": "https://www.investing.com/analysis/we-let-ai-pick-stocks--its-up-111-since-heres-its-rationale-200662874",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "S&P 500: Holiday Gaps Keep Bulls in Charge Despite Low Volume",
+          "author": "Declan Fallon",
+          "source": "Investing.com",
+          "date": "2025-07-04T07:04:00Z",
+          "url": "https://www.investing.com/analysis/july-4th-kicker-gap-for-indices-200663182",
+          "sentiment": "neutral"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Prediction: 2 Stocks That Will Be Worth More Than Nvidia 5 Years From Now",
+          "author": "Will Healy",
+          "source": "The Motley Fool",
+          "date": "2025-07-04T00:14:00Z",
+          "url": "https://www.fool.com/investing/2025/07/03/prediction-2-stocks-worth-nvidia-5-years/?source=iedfolrf0000001",
+          "sentiment": "positive"
+        },
+        {
+          "ticker": "TSLA",
+          "title": "Why Lucid Group Stock Is Jumping Today",
+          "author": "Johnny Rice",
+          "source": "The Motley Fool",
+          "date": "2025-07-03T16:10:13Z",
+          "url": "https://www.fool.com/investing/2025/07/03/why-lucid-group-stock-is-jumping-today/?source=iedfolrf0000001",
+          "sentiment": "negative"
+        }
+      ]
+    }
+  }
+}

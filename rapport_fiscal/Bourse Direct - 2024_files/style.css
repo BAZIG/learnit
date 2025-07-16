@@ -1,0 +1,332 @@
+#blocCentral {
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    padding: 10px;
+}
+#center {
+    width: auto;
+    margin-top: 0;
+}
+#portTR {
+    overflow: auto;
+    min-width: inherit;
+    width: 100%;
+}
+#portTR h6{
+    position: sticky;
+    top: 0;
+    left: 0;
+}
+#portTR #globalTableHolder {
+    width: 100% !important;
+    position: sticky;
+    top: 0px;
+    left: 0px;  
+}
+#incomingChoiceOne {
+    width: 100%;
+    /*height: 120px;*/
+    padding-top: 10px;
+    background-color: #EDF2FC;
+    border: 1px #555 solid;
+}
+#incomingChoiceOne SPAN {
+    display: block;
+    font-weight: bold;
+    padding: 5px 10px;
+    margin-bottom: 20px;
+}
+#incomingChoiceOne LABEL {
+	font-weight: bold;
+	font-size: 11px;
+    margin: 0;
+    padding: 10px;
+}
+#incomingChoiceOne A {
+    border: 1px #555 solid;
+    text-align: center;
+    background-color: #b8cefb;
+    font-weight: normal;
+    color: #555;
+    text-decoration: none;
+    padding: 5px 10px;
+    margin: 10px;
+	font-size: 11px;
+}
+#incomingChoiceOne A:hover {
+    background-color: #57e;
+    font-weight: normal;
+    color: #FFF;
+}
+.champ {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+#incomingChoiceOne SELECT{
+	font-size: 11px;
+}
+#incomingChoiceOne U {
+    margin-left: 5px;
+}
+#incomingChoiceOne .label-choice {
+    width: 175px;
+}
+
+/* page compteOrdres.htm */
+.form-container .champ {
+    text-align: right;
+    margin-bottom: 2px;
+}
+.form-container .champ LABEL {
+    width: 160px;
+    float: left;
+    margin-right: 5px;
+}
+.form-container .champ SELECT {
+    float: left;
+}
+
+.table-color-row .row1 {
+    background-color:#B7CAF2;
+}
+.table-color-row .row2 {
+    background-color:#E9F1FE;
+}
+
+TABLE.datas.table-color-row TH {
+    background-color:#4562AC;color:white;padding:4px 2px;
+}
+.forms-compte-ordres .champ {
+    height: 20px;
+}
+
+/* Page Portefeuille PTR popup bestExe */
+.bestexe {
+    width: 730px;
+}
+
+/* Page asVIeSItuationEnCours.php */
+fieldset {
+    border: none;
+}
+
+/* compte.css */
+* HTML #blocCentral{height:750px;}
+* HTML #blocDroit{position:absolute;right:5px;top:185px;}
+* HTML #blocCentral form.cadre .champ INPUT{width:49%;}
+
+* HTML #blocCentral .popupLiquide{width:700px;}
+*+HTML #blocCentral .popupLiquide{width:700px;}   
+
+* HTML #center{height:100%;}
+
+TABLE.datas TH{background-color:#4562AC;color:white;padding:4px 2px;}
+
+DIV.cadre TABLE.datas.compteInventaire TH,
+DIV.cadre TABLE.datas.compteInventaire TD{border-right:1px solid white;padding:4px;}
+
+#histoCompte{margin-top:25px;}
+#connectedCompte{
+    background:#EDF2FC url(../images/bg_cadre_connectSpe.png) no-repeat scroll left top;
+    height:15px;
+    margin:5px 0;
+    width:250px;}
+
+#connectedCompte #decnx{
+    background:transparent url(../images/decnx.png) no-repeat scroll left center;
+    color:#555555;
+    font-size:10px;
+    padding:3px 17px 1px 16px;}
+
+#blocDroit #rechercheCompte{
+    background:#EDF2FC url(../images/bg_cadre_searchSpe.png) no-repeat scroll left top;
+    height:50px;
+    margin:2px 0;
+    padding-left:5px;
+    width:245px;}
+
+#blocDroit #rechercheCompte SPAN{
+    color:white;
+    font-size:10px;
+    font-weight:bold;
+    padding:1px 0 0 3px;}
+
+#blocDroit #rechercheCompte .corpsPriv{margin:5px;padding-top:0;}
+
+#blocDroit #rechercheCompte INPUT{
+    font-size:11px;
+    height:13px;
+    margin:5px 1px;
+    width:189px;}
+
+#blocDroit #rechercheCompte .btn{
+    background:transparent url(../images/bgBouton.png) repeat scroll 0 0;
+    border:1px solid #183DA7;
+    color:white;
+    font-size:10px;
+    padding:3px 5px 2px;}
+
+#blocDroit #rechercheCompte{
+    background:#EDF2FC url(../images/bg_cadre_searchSpe.png) no-repeat scroll left top;
+    height:50px;
+    margin:2px 0;
+    padding-left:5px;
+    width:245px;}
+    * HTML #blocDroit #rechercheCompte{position:fixed;margin:0;padding-left:5px;width:245px;}
+    * HTML #blocDroit #rechercheCompte FORM{margin:0;padding:0;}
+    * HTML #blocDroit #rechercheCompte INPUT{margin-top:10px;}
+    * HTML #blocDroit #rechercheCompte .corpsPriv{margin:0;}
+    * HTML #blocDroit #rechercheCompte .btn{position:absolute;margin-top:10px;
+}
+
+#blocCentral form.cadre {
+    font-size: 12px;
+}
+
+
+#blocMenu{
+    z-index: 99!important;
+}
+
+#topLiens{
+    z-index: 99!important;
+}
+
+.GB_Window .caption{
+    color: #FFFFFF;
+}
+
+a.bulle{
+    border: none;
+    position:relative;
+    z-index:24;
+    color:#000;
+    text-decoration:none
+}
+
+a.bulle:hover{
+    z-index:125;
+}
+
+a.bulle span{
+    border: none;
+    display: none
+}
+a.bulle:hover span{
+    border: none;
+    display:block;
+    position:absolute;
+    top:2em;
+    left:-300px;
+    width:30em;
+    border:1px solid #000;
+    background-color:#FFF;
+    color:#000;
+    text-align: justify;
+    font-weight:normal;
+    padding:5px;
+}
+
+#info1
+{
+  border: none;
+}
+DIV.messageAlerte A {
+    color: red;
+    font-weight: bold;
+    /* font-size: 12px; */
+}
+#messageAlerte {
+    background-color: #E9F1FE;
+    border: 1px solid #E1E1E1;
+    border-radius: 10px;
+    margin: auto;
+    min-height: 43px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+/* fin compte .css */
+
+/* page virements entrants */
+SPAN#choiceOu {
+    display:block;
+    font-weight:bold;
+    font-size:18px;
+    text-align:center;
+    margin:15px 0 15px 0;
+}
+
+/* page inventaire */
+#divMAJ .boutons {
+    padding: 10px 0 21px;
+}
+.cg-bottom {
+    margin-bottom: 10px;
+}
+
+/* page dividendes (OST) */
+#choiceOne {
+    margin-bottom: 10px;
+}
+.cadreBleu {
+    background: #EDF2FC;
+}
+a.detailOst {
+    background:url('/images/document.png') no-repeat;
+    float:left;
+    width:15px;
+    height:16px;
+    padding:0;
+    margin:2px 2px 2px;
+    display:block;
+    text-indent:15px;
+    overflow:hidden;
+}
+a.dp-choose-date {
+    float:right;
+    width:15px;
+    height:15px;
+    padding:0;
+    margin:2px 2px 2px;
+    display:block;
+    text-indent:15px;
+    overflow:hidden;
+    background:url('/images/calendar.png') no-repeat;
+}
+a.dp-choose-date.dp-disabled {
+    background-position:0 -20px;
+    cursor:default;
+}
+input.dp-applied {
+    width:142px;
+    float:right;
+}
+a.enteteTabUp {
+    background:url('/images/triangleUp.gif') no-repeat;
+    float:left;
+    width:10px;
+    height:6px;
+    padding:0;
+    margin:4px 2px 2px;
+    display:block;
+    text-indent:15px;
+    overflow:hidden;
+}
+a.enteteTabDown {
+    background:url('/images/triangleDown.gif') no-repeat;
+    float:left;
+    width:8px;
+    height:6px;
+    padding:0;
+    margin:4px 2px 2px;
+    display:block;
+    text-indent:15px;
+    overflow:hidden;
+}
+
+#GB_window {
+    top: 10% !important;
+}

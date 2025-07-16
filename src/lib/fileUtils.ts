@@ -161,6 +161,20 @@ export interface BacktestFileInfo {
   timestamp: Date;
 }
 
+// Export getBacktestFiles as getAllBacktestFiles for compatibility
+export const getAllBacktestFiles = getBacktestFiles;
+
+// Stub: Check if a backtest file is news-integrated (customize logic as needed)
+export function isNewsIntegratedBacktest(): boolean {
+  // For now, always return false
+  return false;
+}
+
+// Stub: Read a news-integrated backtest file (same as readBacktestFile for now)
+export async function readNewsIntegratedBacktestFile(fileInfo: BacktestFileInfo): Promise<BacktestResult> {
+  return readBacktestFile(fileInfo);
+}
+
 export function parseBacktestFilename(filename: string): BacktestFileInfo | null {
   // Expected format: TICKER_YYYYMMDD_HHMMSS_analysis.json
   const match = filename.match(/^([A-Z]+)_(\d{8})_(\d{6})_analysis\.json$/);

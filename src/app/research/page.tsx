@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { getLatestAnalyses, readAnalysisFile, getBacktestFiles, readBacktestFile, BacktestResult } from '@/lib/fileUtils';
+import { getLatestAnalyses, readAnalysisFile, getAllBacktestFiles, readBacktestFile, readNewsIntegratedBacktestFile, isNewsIntegratedBacktest, BacktestResult, NewsIntegratedBacktestResult } from '@/lib/fileUtils';
 import { AnalysisData } from '@/lib/analysis';
 import Link from 'next/link';
 
@@ -139,15 +139,20 @@ function isValidNumber(val: unknown): val is number {
   return typeof val === 'number' && isFinite(val);
 }
 
-function BacktestCard({ backtest }: { backtest: BacktestResult }) {
+function BacktestCard({ backtest }: { backtest: BacktestResult | NewsIntegratedBacktestResult }) {
   const pm = backtest.performance_metrics;
+  const isNewsIntegrated = 'news_data' in backtest;
   return (
     <div className="terminal-window mb-4">
-      <div className="terminal-header">
-        <span className="text-[var(--terminal-text)]">
-          $ {backtest.tickers?.join(', ')} BACKTEST ({backtest.start_date} → {backtest.end_date})
-        </span>
-      </div>
+              <div className="terminal-header">
+          <span className="text-[var(--terminal-text)]">
+            $ {backtest.tickers?.join(', ')} BACKTEST 
+            {isNewsIntegrated && ' (NEWS-INTEGRATED)'}
+            <span className="text-[var(--terminal-dim)] ml-2">
+              ({backtest.start_date} → {backtest.end_date})
+            </span>
+          </span>
+        </div>
       <div className="terminal-content">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
@@ -205,8 +210,22 @@ export default async function ResearchPage() {
   const companies = Object.keys(companyAnalyses).sort();
 
   // Load backtest files and their data (limit to 5 most recent)
-  const backtestFiles = getBacktestFiles().slice(0, 5);
-  const backtests: BacktestResult[] = await Promise.all(backtestFiles.map(readBacktestFile));
+  const backtestFiles = getAllBacktestFiles().slice(0, 5);
+  const backtests: (BacktestResult | NewsIntegratedBacktestResult | null)[] = await Promise.all(
+    backtestFiles.map(async (fileInfo) => {
+      try {
+        if (isNewsIntegratedBacktest(fileInfo)) {
+          return await readNewsIntegratedBacktestFile(fileInfo);
+        } else {
+          return await readBacktestFile(fileInfo);
+        }
+      } catch (error) {
+        console.error(`Error reading backtest file ${fileInfo.filename}:`, error);
+        return null;
+      }
+    })
+  );
+  const validBacktests = backtests.filter((backtest): backtest is BacktestResult | NewsIntegratedBacktestResult => backtest !== null);
 
   return (
     <div className="space-y-4 p-4">
@@ -252,11 +271,19 @@ export default async function ResearchPage() {
           {/* Backtest Results Section */}
           <div className="mt-8">
             <div className="terminal-header">
-              <span className="text-[var(--terminal-text)]">BACKTEST RESULTS</span>
+              <div className="flex items-center justify-between">
+                <span className="text-[var(--terminal-text)]">BACKTEST RESULTS</span>
+                <Link 
+                  href="/backtests" 
+                  className="text-[var(--terminal-bright)] hover:text-[var(--terminal-text)] text-sm"
+                >
+                  View All Backtests →
+                </Link>
+              </div>
             </div>
             <div className="terminal-content">
-              {backtests.length > 0 ? (
-                backtests.map((backtest, idx) => (
+              {validBacktests.length > 0 ? (
+                validBacktests.map((backtest, idx) => (
                   <BacktestCard key={idx} backtest={backtest} />
                 ))
               ) : (

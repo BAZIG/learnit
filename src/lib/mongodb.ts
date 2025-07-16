@@ -4,7 +4,10 @@ if (!process.env.MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable inside .env');
 }
 
-const MONGODB_URI = process.env.MONGODB_URI;
+// Ensure we're connecting to the 'test' database
+const MONGODB_URI = process.env.MONGODB_URI?.includes('/test') 
+  ? process.env.MONGODB_URI 
+  : process.env.MONGODB_URI?.replace(/\/[^/?]*(\?|$)/, '/test$1') || process.env.MONGODB_URI;
 
 interface MongooseCache {
   conn: typeof mongoose | null;
@@ -50,4 +53,5 @@ async function connectDB() {
   return cached.conn;
 }
 
-export default connectDB; 
+export default connectDB;
+export { connectDB as connectToDatabase }; 

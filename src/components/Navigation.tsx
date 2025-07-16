@@ -18,6 +18,7 @@ export default function Navigation() {
         <>
           <Link href="/" className="text-[var(--terminal-text)] hover:opacity-75">TERMINAL</Link>
           <Link href="/research" className="text-[var(--terminal-text)] hover:opacity-75">RESEARCH</Link>
+          <Link href="/backtests" className="text-[var(--terminal-text)] hover:opacity-75">BACKTESTS</Link>
           <Link href="/humans" className="text-[var(--terminal-text)] hover:opacity-75">HUMANS</Link>
         </>
       )}
