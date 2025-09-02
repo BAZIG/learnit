@@ -2,6 +2,8 @@
 
 import { useAuth } from '@/components/AuthProvider';
 import { useEffect, useState } from 'react';
+import PersonalAnalysisManager from '@/components/PersonalAnalysisManager';
+import NewsManager from '@/components/NewsManager';
 
 interface User {
   _id: string;
@@ -92,6 +94,8 @@ export default function AdminDashboard() {
       <p>Your role: <span className="font-semibold">{user.role}</span></p>
       
       <UserManagement />
+      <PersonalAnalysisManager />
+      <NewsManager />
     </div>
   );
 } 

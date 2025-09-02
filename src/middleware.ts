@@ -9,8 +9,9 @@ export async function middleware(request: NextRequest) {
 
   // Define public pages
   const publicPaths = [
-    '/login', '/register', '/contact',
-    '/api/auth/login', '/api/auth/register', '/api/auth/me'
+    '/login', '/register', '/contact', '/investment', '/news',
+    '/api/auth/login', '/api/auth/register', '/api/auth/me',
+    '/api/personal-analyses', '/api/news'
   ];
   if (publicPaths.includes(path)) {
     return NextResponse.next();
@@ -18,7 +19,10 @@ export async function middleware(request: NextRequest) {
 
   // If no token, only allow public pages
   if (!token) {
-    if (path === '/contact') return NextResponse.next();
+    if (path === '/contact' || path === '/investment' || path === '/personal-analyses' || path === '/news') return NextResponse.next();
+    if ((path.startsWith('/api/personal-analyses') || path.startsWith('/api/news')) && request.method === 'GET') {
+      return NextResponse.next(); // Allow public read access
+    }
     if (path.startsWith('/api')) {
       return NextResponse.json({ message: 'Authentication required' }, { status: 401 });
     }
@@ -51,10 +55,10 @@ export async function middleware(request: NextRequest) {
 
   // Member or admin pages
   const memberOrAdminPaths = [
-    '/', '/research', '/humans'
+    '/', '/backtests'
   ];
   const memberOrAdminApi = [
-    '/api/research', '/api/humans'
+    '/api/backtests'
   ];
   if (
     memberOrAdminPaths.includes(path) ||

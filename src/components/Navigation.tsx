@@ -16,10 +16,10 @@ export default function Navigation() {
     <div className="space-x-4 flex items-center">
       {(user && (user.role === 'admin' || user.role === 'member')) && (
         <>
+          <Link href="/personal-analyses" className="text-[var(--terminal-text)] hover:opacity-75">ANALYSES</Link>
+          <Link href="/news" className="text-[var(--terminal-text)] hover:opacity-75">NEWS</Link>
           <Link href="/" className="text-[var(--terminal-text)] hover:opacity-75">TERMINAL</Link>
-          <Link href="/research" className="text-[var(--terminal-text)] hover:opacity-75">RESEARCH</Link>
           <Link href="/backtests" className="text-[var(--terminal-text)] hover:opacity-75">BACKTESTS</Link>
-          <Link href="/humans" className="text-[var(--terminal-text)] hover:opacity-75">HUMANS</Link>
         </>
       )}
       <Link href="/contact" className="text-[var(--terminal-text)] hover:opacity-75">CONTACT</Link>

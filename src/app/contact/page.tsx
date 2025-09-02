@@ -38,8 +38,8 @@ export default function Contact() {
             <div>
               <h3 className="text-[var(--terminal-text)] font-bold mb-2">Disclaimer</h3>
               <p className="text-[var(--terminal-text)] text-sm">
-                The analyses and recommendations provided on this website are for informational purposes only.
-                They should not be considered as financial advice. Always do your own research before making investment decisions.
+                This website documents my personal investment decisions/Ideas for transparency. It is not financial advice.
+                I do not guarantee profits or protect against losses. Consult a licensed advisor or do your own research before investing.
               </p>
             </div>
           </div>
